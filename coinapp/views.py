@@ -33,12 +33,7 @@ class SignUpView(CreateView):
         return redirect("home")
 
 
-@method_decorator(
-    [
-        login_required,
-    ],
-    name="dispatch",
-)
+@method_decorator(login_required, name="dispatch")
 class HomeView(View):
     template_name = "home.html"
 
@@ -48,21 +43,20 @@ class HomeView(View):
             .select_related("input", "output")
             .annotate(
                 is_received=Case(
-                    When(
-                        Q(input=request.user),
-                        then=False
-                    ),
+                    When(Q(input=request.user), then=False),
                     default=True,
-                    output_field=BooleanField()
+                    output_field=BooleanField(),
                 )
-            )
+            ).order_by('-created_at')
         )
         return render(request, "home.html", {"transactions": transactions})
 
     def post(self, request):
         touser = User.objects.get(username=request.POST["destAddress"])
         amount = int(request.POST["amount"]) * 100
-        if request.user.amount >= amount:
+        if touser == request.user:
+            messages.warning(request, "Error! You cannot send funds to your own account.")
+        elif request.user.amount >= amount:
             touser.amount = F("amount") + amount
             request.user.amount = F("amount") - amount
             touser.save()
@@ -72,7 +66,7 @@ class HomeView(View):
             )
             messages.success(request, f"Success! Payment success. txnId:{txn.id}")
         else:
-            messages.error(request, "Error! Low balance")
+            messages.warning(request, "Error! Low balance")
         return redirect("home")
 
 
