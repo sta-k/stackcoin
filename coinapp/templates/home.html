@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block css %}
+<link rel="stylesheet" href="{% static 'select2/select2.min.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -10,7 +11,12 @@
     <p class="lead">Send Funds:</p>
     <div class="mb-3">
         <label for="destAddress" class="form-label">Destination address</label>
-        <input type="text" class="form-control" name="destAddress" id="destAddress" aria-describedby="addressHelp">
+        <select class="form-control" id="destAddress" name="destAddress">
+            {% for user in users %}
+            <option value="{{user.username}}">{{user.username}}</option>
+            {% endfor %}
+          </select>
+        <!-- <input type="text" class="form-control" name="destAddress" id="destAddress" aria-describedby="addressHelp"> -->
         <div id="addressHelp" class="form-text"></div>
     </div>
     <div class="mb-3">
@@ -22,24 +28,10 @@
 <hr>
 <p class="lead">Your Transactions</p>
 <ol class="list-group list-group-numbered">
-    <!-- <li class="list-group-item d-flex justify-content-between align-items-start">
-      <div class="ms-2 me-auto">
-        <div class="fw-bold">Paid to Sumee</div>
-        16 Sep 2024, 7:26 AM
-      </div>
-      <span class="badge text-bg-danger rounded-pill">-$14</span>
-    </li>
-    <li class="list-group-item d-flex justify-content-between align-items-start">
-      <div class="ms-2 me-auto">
-        <div class="fw-bold">Received from Suhail</div>
-        16 Sep 2024, 7:21 AM
-      </div>
-      <span class="badge text-bg-success rounded-pill">+$55</span>
-    </li> -->
     {% for transaction in transactions %}
     <li class="list-group-item d-flex justify-content-between align-items-start">
         <div class="ms-2 me-auto">
-          <div class="fw-bold">{% if transaction.is_received %}Received from {{transaction.input.first_name}}{% else %}Paid to {{transaction.output.first_name}}{% endif %}</div>
+          <div class="fw-bold">{% if transaction.is_received %}Received from {{transaction.creator_person.first_name}}{% else %}Paid to {{transaction.target_person.first_name}}{% endif %}</div>
           {{transaction.created_at}}
         </div>
         <span class="badge text-bg-{% if transaction.is_received %}success{%else%}danger{%endif%} rounded-pill">{% if transaction.is_received %}+{%else%}-{%endif%}${% widthratio transaction.output_amount 100 1 %}</span>
@@ -49,27 +41,29 @@
 {% endblock %}
 
 {% block js %}
+<script src="{% static 'select2/select2.min.js' %}"></script>
 <script>
     var searchRequest = null;
     $(function () {
-        $("#destAddress").keyup(function () {
-            let value = $(this).val();
+        $('#destAddress').select2();
+        // $("#destAddress").keyup(function () {
+        //     let value = $(this).val();
 
-            if (value.length == 10) {
-                if (searchRequest != null)
-                    searchRequest.abort();
-                searchRequest = $.ajax({
-                    type: "GET",
-                    url: "{% url 'coinapp:getuser' %}",
-                    data: {
-                        'user': value
-                    },
-                    success: function (data) {
-                        $("#addressHelp").html(data);
-                    }
-                });
-            }
-        });
+        //     if (value.length == 10) {
+        //         if (searchRequest != null)
+        //             searchRequest.abort();
+        //         searchRequest = $.ajax({
+        //             type: "GET",
+        //             url: "{% url 'coinapp:getuser' %}",
+        //             data: {
+        //                 'user': value
+        //             },
+        //             success: function (data) {
+        //                 $("#addressHelp").html(data);
+        //             }
+        //         });
+        //     }
+        // });
     });
 </script>
 {% endblock %}

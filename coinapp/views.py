@@ -39,30 +39,38 @@ class HomeView(View):
 
     def get(self, request):
         transactions = (
-            Transaction.objects.filter(Q(input=request.user) | Q(output=request.user))
-            .select_related("input", "output")
+            Transaction.objects.filter(
+                Q(creator_person=request.user) | Q(target_person=request.user)
+            )
+            .select_related("creator_person", "target_person")
             .annotate(
                 is_received=Case(
-                    When(Q(input=request.user), then=False),
+                    When(Q(creator_person=request.user), then=False),
                     default=True,
                     output_field=BooleanField(),
                 )
-            ).order_by('-created_at')
+            )
+            .order_by("-created_at")
         )
-        return render(request, "home.html", {"transactions": transactions})
+        users = User.objects.exclude(username=request.user.username)
+        return render(
+            request, "home.html", {"transactions": transactions, "users": users}
+        )
 
     def post(self, request):
         touser = User.objects.get(username=request.POST["destAddress"])
         amount = int(request.POST["amount"]) * 100
         if touser == request.user:
-            messages.warning(request, "Error! You cannot send funds to your own account.")
+            messages.warning(
+                request, "Error! You cannot send funds to your own account."
+            )
         elif request.user.amount >= amount:
             touser.amount = F("amount") + amount
             request.user.amount = F("amount") - amount
             touser.save()
             request.user.save()
             txn = Transaction.objects.create(
-                input=request.user, output=touser, output_amount=amount
+                creator_person=request.user, target_person=touser, output_amount=amount
             )
             messages.success(request, f"Success! Payment success. txnId:{txn.id}")
         else:
