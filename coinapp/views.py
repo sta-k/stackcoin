@@ -70,7 +70,7 @@ class HomeView(View):
             touser.save()
             request.user.save()
             txn = Transaction.objects.create(
-                creator_person=request.user, target_person=touser, output_amount=amount
+                creator_person=request.user, target_person=touser, amount=amount
             )
             messages.success(request, f"Success! Payment success. txnId:{txn.id}")
         else:
@@ -78,7 +78,7 @@ class HomeView(View):
         return redirect("home")
 
 
-@login_required
-def getuser(request):
-    user = User.objects.get(username=request.GET["user"])
-    return HttpResponse(f"{user.first_name} {user.last_name}")
+# @login_required
+# def getuser(request):
+#     user = User.objects.get(username=request.GET["user"])
+#     return HttpResponse(f"{user.first_name} {user.last_name}")

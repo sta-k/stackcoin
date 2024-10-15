@@ -43,7 +43,7 @@
     "fields": {
       "creator_person": 1,
       "target_person": 2,
-      "output_amount": 1500,
+      "amount": 1500,
       "created_at": "2024-09-17T02:22:27.939Z"
     }
   },
@@ -53,7 +53,7 @@
     "fields": {
       "creator_person": 2,
       "target_person": 1,
-      "output_amount": 1000,
+      "amount": 1000,
       "created_at": "2024-09-17T02:22:43.480Z"
     }
   },
@@ -63,7 +63,7 @@
     "fields": {
       "creator_person": 1,
       "target_person": 2,
-      "output_amount": 7800,
+      "amount": 7800,
       "created_at": "2024-09-17T02:23:05.471Z"
     }
   }
