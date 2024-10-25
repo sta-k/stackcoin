@@ -11,6 +11,7 @@ from django.db.models import Q, F, BooleanField, Case, When, Sum
 from django.contrib import messages
 
 from coinapp.models import Transaction
+from django.conf import settings
 
 # Create your views here.
 User = get_user_model()
