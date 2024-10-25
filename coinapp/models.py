@@ -13,5 +13,5 @@ class Transaction(models.Model):
     target_person = models.ForeignKey(
         "User", on_delete=models.CASCADE, related_name="txn_target"
     )
-    output_amount = models.IntegerField(default=0)
+    amount = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)

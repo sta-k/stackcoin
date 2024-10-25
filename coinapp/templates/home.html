@@ -6,14 +6,15 @@
 {% endblock %}
 
 {% block content %}
-<p class="text-muted">Balance: {% widthratio request.user.amount 100 1 %} rs.</p>
+
+<h3 class="text-muted">Balance: ${% widthratio request.user.amount 100 1 %}</h3>
 <form method="post" action="."> {% csrf_token %}
     <p class="lead">Send Funds:</p>
     <div class="mb-3">
         <label for="destAddress" class="form-label">Destination address</label>
         <select class="form-control" id="destAddress" name="destAddress">
             {% for user in users %}
-            <option value="{{user.username}}">{{user.username}}</option>
+            <option value="{{user.username}}">{{user.username}}({{user.first_name}})</option>
             {% endfor %}
           </select>
         <!-- <input type="text" class="form-control" name="destAddress" id="destAddress" aria-describedby="addressHelp"> -->
@@ -26,6 +27,7 @@
     <button type="submit" class="btn btn-primary">Send</button>
 </form>
 <hr>
+<p>Total money in existence:${{total}}</p>
 <p class="lead">Your Transactions</p>
 <ol class="list-group list-group-numbered">
     {% for transaction in transactions %}
@@ -34,7 +36,7 @@
           <div class="fw-bold">{% if transaction.is_received %}Received from {{transaction.creator_person.first_name}}{% else %}Paid to {{transaction.target_person.first_name}}{% endif %}</div>
           {{transaction.created_at}}
         </div>
-        <span class="badge text-bg-{% if transaction.is_received %}success{%else%}danger{%endif%} rounded-pill">{% if transaction.is_received %}+{%else%}-{%endif%}${% widthratio transaction.output_amount 100 1 %}</span>
+        <span class="badge text-bg-{% if transaction.is_received %}success{%else%}danger{%endif%} rounded-pill">{% if transaction.is_received %}+{%else%}-{%endif%}${% widthratio transaction.amount 100 1 %}</span>
     </li>
     {% endfor %}
 </ol>
@@ -54,7 +56,7 @@
         //             searchRequest.abort();
         //         searchRequest = $.ajax({
         //             type: "GET",
-        //             url: "{% url 'coinapp:getuser' %}",
+        //             url: "{# url 'coinapp:getuser' #}",
         //             data: {
         //                 'user': value
         //             },

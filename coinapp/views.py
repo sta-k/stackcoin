@@ -6,7 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views import View
-from django.db.models import Q, F, BooleanField, Case, When
+from django.db.models import Q, F, BooleanField, Case, When, Sum
 
 from django.contrib import messages
 
@@ -53,32 +53,35 @@ class HomeView(View):
             .order_by("-created_at")
         )
         users = User.objects.exclude(username=request.user.username)
+        total = User.objects.aggregate(total=Sum("amount"))
         return render(
-            request, "home.html", {"transactions": transactions, "users": users}
+            request, "home.html", {"transactions": transactions, "users": users,"total": total}
         )
 
     def post(self, request):
         touser = User.objects.get(username=request.POST["destAddress"])
+        fromuser = request.user
         amount = int(request.POST["amount"]) * 100
-        if touser == request.user:
+        if touser == fromuser:
             messages.warning(
                 request, "Error! You cannot send funds to your own account."
             )
-        elif request.user.amount >= amount:
+        # elif fromuser.amount >= amount:
+        else:
             touser.amount = F("amount") + amount
-            request.user.amount = F("amount") - amount
+            fromuser.amount = F("amount") - amount
             touser.save()
-            request.user.save()
+            fromuser.save()
             txn = Transaction.objects.create(
-                creator_person=request.user, target_person=touser, output_amount=amount
+                creator_person=fromuser, target_person=touser, amount=amount
             )
             messages.success(request, f"Success! Payment success. txnId:{txn.id}")
-        else:
-            messages.warning(request, "Error! Low balance")
+        # else:
+        #     messages.warning(request, "Error! Low balance")
         return redirect("home")
 
 
-@login_required
-def getuser(request):
-    user = User.objects.get(username=request.GET["user"])
-    return HttpResponse(f"{user.first_name} {user.last_name}")
+# @login_required
+# def getuser(request):
+#     user = User.objects.get(username=request.GET["user"])
+#     return HttpResponse(f"{user.first_name} {user.last_name}")
