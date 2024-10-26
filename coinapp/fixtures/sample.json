@@ -1,40 +1,217 @@
-[
+[  
   {
     "model": "coinapp.user",
     "pk": 1,
     "fields": {
-      "password": "pbkdf2_sha256$870000$dDZq3KUhN9BKRRVEmqLb3g$hvINqf9hBCsDf4ljwXzqexEErnmxsXzQGqjTcQsHykc=",
-      "last_login": "2024-09-17T02:22:00.839Z",
+      "password": "pbkdf2_sha256$870000$IxqwLJE4C5uhlLF9LBpiOj$jS5VbK7A61RD9t7SpPo2ucLwNLVR03iIATavqJ/l/Sc=",
+      "last_login": "2024-10-26T14:39:23.475Z",
       "is_superuser": false,
-      "username": "7356775981",
-      "first_name": "Suhail",
+      "first_name": "Sulaiman",
       "last_name": "",
       "email": "",
       "is_staff": false,
       "is_active": true,
-      "date_joined": "2024-09-16T23:54:45.042Z",
+      "date_joined": "2024-10-26T14:39:22.900Z",
+      "username": 8547622462,
       "amount": 0,
       "groups": [],
-      "user_permissions": []
+      "user_permissions": [],
+      "offerings": [15]
     }
   },
   {
-    "model": "coinapp.user",
+    "model": "coinapp.offering",
+    "pk": 1,
+    "fields": {
+      "category": 1,
+      "heading": "rice",
+      "detail": "Matta rice",
+      "amount": 10
+    }
+  },
+  {
+    "model": "coinapp.offering",
     "pk": 2,
     "fields": {
-      "password": "pbkdf2_sha256$870000$8KYKXmFzscTBNtGl69ZUhf$1zROdIwGXSxwEBO4V4tprd7JA9b6mAXAOiMabfKjAIY=",
-      "last_login": "2024-09-17T02:21:00.742Z",
-      "is_superuser": false,
-      "username": "8921513696",
-      "first_name": "Nusrath",
-      "last_name": "PP",
-      "email": "",
-      "is_staff": false,
-      "is_active": true,
-      "date_joined": "2024-09-17T02:21:00.120Z",
-      "amount": 0,
-      "groups": [],
-      "user_permissions": []
+      "category": 1,
+      "heading": "coconut",
+      "detail": "Thenga. Coconut for chutney and curry.",
+      "amount": 2
+    }
+  },
+  {
+    "model": "coinapp.offering",
+    "pk": 3,
+    "fields": {
+      "category": 1,
+      "heading": "egg",
+      "detail": "Egg recipies per piece",
+      "amount": 1
+    }
+  },
+  {
+    "model": "coinapp.offering",
+    "pk": 4,
+    "fields": {
+      "category": 1,
+      "heading": "brinjal",
+      "detail": "Vazhuthanangal, per kg",
+      "amount": 1
+    }
+  },
+  {
+    "model": "coinapp.offering",
+    "pk": 5,
+    "fields": {
+      "category": 1,
+      "heading": "mulak_podi",
+      "detail": "Mulaku podi per 100gram",
+      "amount": 2
+    }
+  },
+  {
+    "model": "coinapp.offering",
+    "pk": 6,
+    "fields": {
+      "category": 1,
+      "heading": "salt",
+      "detail": "uppu per kg",
+      "amount": 1
+    }
+  },
+  {
+    "model": "coinapp.offering",
+    "pk": 7,
+    "fields": {
+      "category": 2,
+      "heading": "drinking_water",
+      "detail": "Drinking water",
+      "amount": 0
+    }
+  },
+  {
+    "model": "coinapp.offering",
+    "pk": 8,
+    "fields": {
+      "category": 2,
+      "heading": "non_drinking_water",
+      "detail": "Non drinking water",
+      "amount": 0
+    }
+  },
+  {
+    "model": "coinapp.offering",
+    "pk": 9,
+    "fields": {
+      "category": 3,
+      "heading": "earphone",
+      "detail": "Earphone",
+      "amount": 100
+    }
+  },
+  {
+    "model": "coinapp.offering",
+    "pk": 10,
+    "fields": {
+      "category": 3,
+      "heading": "mp3_player",
+      "detail": "MP3 Player for listening songs",
+      "amount": 500
+    }
+  },
+  {
+    "model": "coinapp.offering",
+    "pk": 11,
+    "fields": {
+      "category": 3,
+      "heading": "solarpanel",
+      "detail": "Solar panel",
+      "amount": 100
+    }
+  },
+  {
+    "model": "coinapp.offering",
+    "pk": 12,
+    "fields": {
+      "category": 4,
+      "heading": "underwear",
+      "detail": "UnderWear",
+      "amount": 20
+    }
+  },
+  {
+    "model": "coinapp.offering",
+    "pk": 13,
+    "fields": {
+      "category": 4,
+      "heading": "tracksuit",
+      "detail": "Track suit pants",
+      "amount": 50
+    }
+  },
+  {
+    "model": "coinapp.offering",
+    "pk": 14,
+    "fields": {
+      "category": 4,
+      "heading": "tshirt",
+      "detail": "Tshirt",
+      "amount": 30
+    }
+  },
+  {
+    "model": "coinapp.offering",
+    "pk": 15,
+    "fields": {
+      "category": 5,
+      "heading": "land",
+      "detail": "25 meter/sq land",
+      "amount": 5000
+    }
+  },
+  {
+    "model": "coinapp.offering",
+    "pk": 16,
+    "fields": {
+      "category": 5,
+      "heading": "room_rent",
+      "detail": "Room rent/month",
+      "amount": 500
+    }
+  },
+  {
+    "model": "coinapp.category",
+    "pk": 1,
+    "fields": {
+      "heading": "Food"
+    }
+  },
+  {
+    "model": "coinapp.category",
+    "pk": 2,
+    "fields": {
+      "heading": "Water"
+    }
+  },
+  {
+    "model": "coinapp.category",
+    "pk": 3,
+    "fields": {
+      "heading": "Electronics"
+    }
+  },
+  {
+    "model": "coinapp.category",
+    "pk": 4,
+    "fields": {
+      "heading": "Clothing"
+    }
+  },
+  {
+    "model": "coinapp.category",
+    "pk": 5,
+    "fields": {
+      "heading": "Shelter"
     }
   }
 ]

@@ -1,4 +1,10 @@
-{% load static %}<!doctype html>
+{% load static %}
+
+{% url 'home' as url_home %}
+{% url 'coinapp:offerings' as url_offerings %}
+{% url 'login' as url_login %}
+{% url 'signup' as url_signup %}
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -23,24 +29,32 @@
                       <button class="btn btn-link" type="submit">logout</button>
                   </form>
                 </div>
-              {% else %}
-                <a href="{% url 'login' %}" class="btn btn-light" role="button">Log in</a>
-                <a href="{% url 'signup' %}" class="btn btn-primary" role="button">Sign up</a>
               {% endif %}
             </div>
           </div>
           <div class="card mb-3">
             <div class="card-header">
-              {% url 'home' as url_home %}
-              {% url 'coinapp:offerings' as url_offerings %}
+              
               <ul class="nav nav-tabs card-header-tabs">
+                {% if user.is_authenticated %}                  
+                  <li class="nav-item">
+                    <a class="nav-link{% if request.path == url_home.path %} active{% endif %}" href="{{url_home}}">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link{% if url_offerings in request.path %} active{% endif %}" href="{{url_offerings}}">Offerings </a>
+                  </li>
+                {% else %}
+                  
                 <li class="nav-item">
-                  <a class="nav-link{% if url_home == request.path %} active{% endif %}" href="{{url_home}}">Home</a>
+                  <a class="nav-link{% if request.path == url_login  %} active{% endif %}" href="{{url_login}}">Log in</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link{% if url_offerings in request.path %} active{% endif %}" href="{{url_offerings}}">Offerings </a>
+                  <a class="nav-link{% if request.path == url_signup  %} active{% endif %}" href="{{url_signup}}">Sign up</a>
                 </li>
-                </ul>
+                {% endif %}
+              </ul>
+                
+              
             </div>
             <div class="card-body" style="min-height: 500px;">
               {% for message in messages %}

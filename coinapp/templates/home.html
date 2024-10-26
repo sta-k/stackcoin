@@ -6,23 +6,22 @@
 {% endblock %}
 
 {% block content %}
-
-<h3 class="text-muted">Balance: ${% widthratio request.user.amount 100 1 %}</h3>
+<h3 class="text-muted">Balance: {{request.user.amount}}$</h3>
 <form method="post" action="."> {% csrf_token %}
     <p class="lead">Send Funds:</p>
     <div class="mb-3">
-        <label for="destAddress" class="form-label">Destination address</label>
-        <select class="form-control" id="destAddress" name="destAddress">
+        <label for="touser" class="form-label">Destination address</label>
+        <select class="form-control" id="id_touser" name="touser">
+            <option value="">---------</option> 
             {% for user in users %}
             <option value="{{user.username}}">{{user.username}}({{user.first_name}})</option>
             {% endfor %}
-          </select>
-        <!-- <input type="text" class="form-control" name="destAddress" id="destAddress" aria-describedby="addressHelp"> -->
-        <div id="addressHelp" class="form-text"></div>
+        </select>
     </div>
     <div class="mb-3">
-        <label for="amount" class="form-label">Amount</label>
-        <input type="text" class="form-control" name="amount" id="amount">
+        <label for="offering" class="form-label">Item</label>
+        <select class="form-control" name="offering" id="id_offering">
+        </select>
     </div>
     <button type="submit" class="btn btn-primary">Send</button>
 </form>
@@ -36,7 +35,7 @@
           <div class="fw-bold">{% if transaction.is_received %}Received from {{transaction.creator_person.first_name}}{% else %}Paid to {{transaction.target_person.first_name}}{% endif %}</div>
           {{transaction.created_at}}
         </div>
-        <span class="badge text-bg-{% if transaction.is_received %}success{%else%}danger{%endif%} rounded-pill">{% if transaction.is_received %}+{%else%}-{%endif%}${% widthratio transaction.amount 100 1 %}</span>
+        <span class="badge text-bg-{% if transaction.is_received %}success{%else%}danger{%endif%} rounded-pill">{% if transaction.is_received %}+{%else%}-{%endif%}${{transaction.offering.amount}}</span>
     </li>
     {% endfor %}
 </ol>
@@ -45,27 +44,17 @@
 {% block js %}
 <script src="{% static 'select2/select2.min.js' %}"></script>
 <script>
-    var searchRequest = null;
     $(function () {
-        $('#destAddress').select2();
-        // $("#destAddress").keyup(function () {
-        //     let value = $(this).val();
-
-        //     if (value.length == 10) {
-        //         if (searchRequest != null)
-        //             searchRequest.abort();
-        //         searchRequest = $.ajax({
-        //             type: "GET",
-        //             url: "{# url 'coinapp:getuser' #}",
-        //             data: {
-        //                 'user': value
-        //             },
-        //             success: function (data) {
-        //                 $("#addressHelp").html(data);
-        //             }
-        //         });
-        //     }
-        // });
+        $('#id_touser').select2();
+        $('#id_touser').on('select2:select', function (e) {
+            let userid = e.params.data.id;
+            console.log(userid);
+            $.ajax({ url: "{% url 'coinapp:ajax_load_offerings' %}", data: {'userid': userid},
+                success: function (data) {   // `data` is the return of the `load_cities` view function
+                  $("#id_offering").html(data);  // replace the contents of the city input with the data that came from the server
+                }
+            });
+        });
     });
 </script>
 {% endblock %}

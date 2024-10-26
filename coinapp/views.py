@@ -1,18 +1,16 @@
 from django.contrib.auth import get_user_model
 from django.views.generic import CreateView
 from django.contrib.auth import login
-from django.shortcuts import render, redirect, HttpResponse
-from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.db.models import Q, F, BooleanField, Case, When, Sum
-
+from django.db import transaction
 from django.contrib import messages
 
 from coinapp.models import Transaction, Offering
-from django.conf import settings
-from coinapp.forms import SignUpForm, OfferingForm
+from coinapp.forms import SignUpForm
 
 # Create your views here.
 User = get_user_model()
@@ -21,7 +19,7 @@ User = get_user_model()
 class SignUpView(CreateView):
     model = User
     form_class = SignUpForm
-    template_name = "registration/signup_form.html"
+    template_name = "registration/signup.html"
 
     def form_valid(self, form):
         user = form.save()
@@ -38,7 +36,7 @@ class HomeView(View):
             Transaction.objects.filter(
                 Q(creator_person=request.user) | Q(target_person=request.user)
             )
-            .select_related("creator_person", "target_person")
+            .select_related("creator_person", "target_person","offering")
             .annotate(
                 is_received=Case(
                     When(Q(creator_person=request.user), then=False),
@@ -55,42 +53,37 @@ class HomeView(View):
         )
 
     def post(self, request):
-        touser = User.objects.get(username=request.POST["destAddress"])
+        touser = User.objects.get(username=request.POST["touser"])
         fromuser = request.user
-        amount = int(request.POST["amount"]) * 100
+        
         if touser == fromuser:
             messages.warning(
                 request, "Error! You cannot send funds to your own account."
             )
-        # elif fromuser.amount >= amount:
         else:
-            touser.amount = F("amount") + amount
-            fromuser.amount = F("amount") - amount
-            touser.save()
-            fromuser.save()
-            txn = Transaction.objects.create(
-                creator_person=fromuser, target_person=touser, amount=amount
-            )
-            messages.success(request, f"Success! Payment success. txnId:{txn.id}")
-        # else:
-        #     messages.warning(request, "Error! Low balance")
+            
+            offering = Offering.objects.get(id = request.POST["offering"])
+            with transaction.atomic():
+                touser.amount = F("amount") + offering.amount
+                fromuser.amount = F("amount") - offering.amount
+                touser.save()
+                fromuser.save()
+                txn = Transaction.objects.create(
+                    creator_person=fromuser, target_person=touser, offering=offering
+                )
+                messages.success(request, f"Success! Payment success. txnId:{txn.id}")
+        
         return redirect("home")
 
 
 @login_required
 def offering_view(request):
-    if request.method == "POST":
-        form = OfferingForm(request.POST)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            # obj.user = request.user
-            obj.save()
-            messages.success(request, "Offering saved with success!")
-            return redirect("home")
-    else:
-        form = OfferingForm()
+    return render(request, "coinapp/offerings.html")
 
-    offerings = Offering.objects.all()
-    return render(
-        request, "coinapp/offerings.html", {"form": form, "offerings": offerings}
-    )
+@login_required
+def load_offerings(request):
+    username = request.GET.get('userid')
+    offerings = []
+    if username:
+        offerings = User.objects.get(username=username).offerings.all() #Offering.objects.filter(user=request.GET.get('user_id'))
+    return render(request, 'coinapp/user_offerings_list_options.html', {'offerings': offerings})
