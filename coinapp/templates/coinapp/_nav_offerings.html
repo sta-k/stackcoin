@@ -1,0 +1,9 @@
+<ul class="nav nav-pills mb-3"> 
+  <li class="nav-item">
+    <a class="nav-link{% if active == 'offerings' %} active{% endif %}" href="{% url 'coinapp:offerings' %}">Offerings</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link{% if active == 'my_offerings' %} active{% endif %}" href="{% url 'coinapp:offerings' %}">My Offerings</a>
+  </li>
+</ul>
+<hr>

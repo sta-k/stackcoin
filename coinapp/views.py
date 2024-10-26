@@ -10,17 +10,12 @@ from django.db.models import Q, F, BooleanField, Case, When, Sum
 
 from django.contrib import messages
 
-from coinapp.models import Transaction
+from coinapp.models import Transaction, Offering
 from django.conf import settings
+from coinapp.forms import SignUpForm, OfferingForm
 
 # Create your views here.
 User = get_user_model()
-
-
-class SignUpForm(UserCreationForm):
-    class Meta(UserCreationForm.Meta):
-        model = User
-        fields = ("first_name", "last_name", "username", "password1", "password2")
 
 
 class SignUpView(CreateView):
@@ -82,7 +77,20 @@ class HomeView(View):
         return redirect("home")
 
 
-# @login_required
-# def getuser(request):
-#     user = User.objects.get(username=request.GET["user"])
-#     return HttpResponse(f"{user.first_name} {user.last_name}")
+@login_required
+def offering_view(request):
+    if request.method == "POST":
+        form = OfferingForm(request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            # obj.user = request.user
+            obj.save()
+            messages.success(request, "Offering saved with success!")
+            return redirect("home")
+    else:
+        form = OfferingForm()
+
+    offerings = Offering.objects.all()
+    return render(
+        request, "coinapp/offerings.html", {"form": form, "offerings": offerings}
+    )
