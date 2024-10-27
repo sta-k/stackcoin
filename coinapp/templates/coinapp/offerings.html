@@ -9,6 +9,7 @@
       <th>Heading</th>
       <th>Detail</th>
       <th>Rate</th>
+      <th>Active</th>
     </tr>
   </thead>
   <tbody>
@@ -19,6 +20,15 @@
       <td>{{offering.heading}}</td>
       <td>{{offering.detail}}</td>
       <td>{{offering.amount}}$</td>
+      <td>
+        <form method="post" action=".">{% csrf_token %}
+          <input type="hidden" name="offering" value="{{offering.id}}">
+          <div class="form-check form-switch">
+            <input class="form-check-input" onChange="this.form.submit()" type="checkbox" 
+              role="switch" name="is_active"{%if offering.is_active %} checked{%endif%}>
+          </div>
+        </form>
+      </td>
     </tr>
     {% endfor %}
   </tbody>

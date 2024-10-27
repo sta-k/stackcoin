@@ -7,11 +7,10 @@ from django.views import View
 from django.db.models import Q, F, BooleanField, Case, When, Sum
 from django.db import transaction
 from django.contrib import messages
-# from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from coinapp.models import Transaction, Offering
 from coinapp.forms import SignUpForm
-# Create your views here.
+
 User = get_user_model()
 
 class SignUpView(CreateView):
@@ -21,8 +20,6 @@ class SignUpView(CreateView):
 
 @method_decorator(login_required, name="dispatch")
 class HomeView(View):
-    template_name = "home.html"
-
     def get(self, request):
         transactions = (
             Transaction.objects.filter(
@@ -68,13 +65,31 @@ class HomeView(View):
         return redirect("coinapp:home")
 
 
-@login_required
-def offering_view(request):
-    return render(request, "coinapp/offerings.html",{"offerings":Offering.objects.order_by('category')})
-
+@method_decorator(login_required, name="dispatch")
+class OfferingView(View):
+    def get(self, request):
+        offering = Offering.objects.annotate(
+            is_active=Case(
+                When(Q(user=request.user), then=True),
+                default=False,
+                output_field=BooleanField(),
+            )
+        ).order_by('-is_active','category')
+        return render(request, "coinapp/offerings.html",{"offerings":offering})
+    def post(self, request):
+        offering = Offering.objects.get(id = request.POST["offering"])
+        is_active = request.POST.get('is_active')
+        if is_active:
+            request.user.offerings.add(offering)
+            messages.success(request, f"Offering activated: {offering}.")
+        else:
+            request.user.offerings.remove(offering)
+            messages.warning(request, f"Offering deactivated: {offering}.")
+        return redirect("coinapp:offerings")
+    
 @login_required
 def load_offerings(request):
-    username = request.GET.get('userid')
+    username = request.GET.get('username')
     offerings = []
     if username:
         offerings = Offering.objects.filter(user__username=username) # User.objects.get(username=username).offerings.all()

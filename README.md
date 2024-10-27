@@ -9,6 +9,6 @@ python manage.py runserver
 ```
 
 TODO
-activate/deactivate user offerings
+
 design about page 
 add tests

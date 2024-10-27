@@ -33,7 +33,8 @@
     <li class="list-group-item d-flex justify-content-between align-items-start">
         <div class="ms-2 me-auto">
           <div class="fw-bold">{% if transaction.is_received %}Received from {{transaction.creator_person.first_name}}{% else %}Paid to {{transaction.target_person.first_name}}{% endif %}</div>
-          {{transaction.created_at}}
+          {{transaction.created_at}}<br>
+          {{transaction.offering}}
         </div>
         <span class="badge text-bg-{% if transaction.is_received %}success{%else%}danger{%endif%} rounded-pill">{% if transaction.is_received %}+{%else%}-{%endif%}${{transaction.offering.amount}}</span>
     </li>
@@ -46,10 +47,11 @@
 <script>
     $(function () {
         $('#id_touser').select2();
+        $('#id_touser').val('').trigger('change');
         $('#id_touser').on('select2:select', function (e) {
-            let userid = e.params.data.id;
-            console.log(userid);
-            $.ajax({ url: "{% url 'coinapp:ajax_load_offerings' %}", data: {'userid': userid},
+            $.ajax({ 
+                url: "{% url 'coinapp:ajax_load_offerings' %}", 
+                data: {'username': e.params.data.id},
                 success: function (data) {
                   $("#id_offering").html(data);
                 }
