@@ -1,9 +1,10 @@
 {% load static %}
 
-{% url 'home' as url_home %}
+{% url 'coinapp:home' as url_home %}
 {% url 'coinapp:offerings' as url_offerings %}
 {% url 'login' as url_login %}
 {% url 'signup' as url_signup %}
+{% url 'about' as url_about %}
 <!doctype html>
 <html lang="en">
   <head>
@@ -45,12 +46,15 @@
                   </li>
                 {% else %}
                   
-                <li class="nav-item">
-                  <a class="nav-link{% if request.path == url_login  %} active{% endif %}" href="{{url_login}}">Log in</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link{% if request.path == url_signup  %} active{% endif %}" href="{{url_signup}}">Sign up</a>
-                </li>
+                  <li class="nav-item">
+                    <a class="nav-link{% if request.path == url_login  %} active{% endif %}" href="{{url_login}}">Log in</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link{% if request.path == url_signup  %} active{% endif %}" href="{{url_signup}}">Sign up</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link{% if request.path == url_about  %} active{% endif %}" href="{{url_about}}">About</a>
+                  </li>
                 {% endif %}
               </ul>
                 

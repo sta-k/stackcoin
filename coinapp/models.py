@@ -1,14 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.core.validators import MaxValueValidator, MinValueValidator
 
 class User(AbstractUser):
-    username = models.IntegerField(
-        unique=True,
-        help_text="10 digit mobilenumber",
-        validators=[MinValueValidator(6000000000), MaxValueValidator(9999999999)]
-    )
-
     amount = models.IntegerField(default=0)
     offerings = models.ManyToManyField("Offering")
 
@@ -31,12 +24,12 @@ class Offering(models.Model):
 
 class Transaction(models.Model):
     creator_person = models.ForeignKey(
-        "User", on_delete=models.CASCADE, related_name="txn_creator"
+        "User", on_delete=models.PROTECT, related_name="txn_creator"
     )
     target_person = models.ForeignKey(
-        "User", on_delete=models.CASCADE, related_name="txn_target"
+        "User", on_delete=models.PROTECT, related_name="txn_target"
     )
-    offering = models.ForeignKey("Offering", on_delete=models.CASCADE)
+    offering = models.ForeignKey("Offering", on_delete=models.PROTECT)
     # amount = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 

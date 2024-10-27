@@ -50,8 +50,8 @@
             let userid = e.params.data.id;
             console.log(userid);
             $.ajax({ url: "{% url 'coinapp:ajax_load_offerings' %}", data: {'userid': userid},
-                success: function (data) {   // `data` is the return of the `load_cities` view function
-                  $("#id_offering").html(data);  // replace the contents of the city input with the data that came from the server
+                success: function (data) {
+                  $("#id_offering").html(data);
                 }
             });
         });

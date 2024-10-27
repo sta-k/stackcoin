@@ -23,7 +23,7 @@
     "model": "coinapp.offering",
     "pk": 1,
     "fields": {
-      "category": 1,
+      "category": "Food",
       "heading": "rice",
       "detail": "Matta rice",
       "amount": 10
@@ -33,7 +33,7 @@
     "model": "coinapp.offering",
     "pk": 2,
     "fields": {
-      "category": 1,
+      "category": "Food",
       "heading": "coconut",
       "detail": "Thenga. Coconut for chutney and curry.",
       "amount": 2
@@ -43,7 +43,7 @@
     "model": "coinapp.offering",
     "pk": 3,
     "fields": {
-      "category": 1,
+      "category": "Food",
       "heading": "egg",
       "detail": "Egg recipies per piece",
       "amount": 1
@@ -53,7 +53,7 @@
     "model": "coinapp.offering",
     "pk": 4,
     "fields": {
-      "category": 1,
+      "category": "Food",
       "heading": "brinjal",
       "detail": "Vazhuthanangal, per kg",
       "amount": 1
@@ -63,7 +63,7 @@
     "model": "coinapp.offering",
     "pk": 5,
     "fields": {
-      "category": 1,
+      "category": "Food",
       "heading": "mulak_podi",
       "detail": "Mulaku podi per 100gram",
       "amount": 2
@@ -73,7 +73,7 @@
     "model": "coinapp.offering",
     "pk": 6,
     "fields": {
-      "category": 1,
+      "category": "Food",
       "heading": "salt",
       "detail": "uppu per kg",
       "amount": 1
@@ -83,7 +83,7 @@
     "model": "coinapp.offering",
     "pk": 7,
     "fields": {
-      "category": 2,
+      "category": "Water",
       "heading": "drinking_water",
       "detail": "Drinking water",
       "amount": 0
@@ -93,7 +93,7 @@
     "model": "coinapp.offering",
     "pk": 8,
     "fields": {
-      "category": 2,
+      "category": "Water",
       "heading": "non_drinking_water",
       "detail": "Non drinking water",
       "amount": 0
@@ -103,7 +103,7 @@
     "model": "coinapp.offering",
     "pk": 9,
     "fields": {
-      "category": 3,
+      "category": "Electronics",
       "heading": "earphone",
       "detail": "Earphone",
       "amount": 100
@@ -113,7 +113,7 @@
     "model": "coinapp.offering",
     "pk": 10,
     "fields": {
-      "category": 3,
+      "category": "Electronics",
       "heading": "mp3_player",
       "detail": "MP3 Player for listening songs",
       "amount": 500
@@ -123,7 +123,7 @@
     "model": "coinapp.offering",
     "pk": 11,
     "fields": {
-      "category": 3,
+      "category": "Electronics",
       "heading": "solarpanel",
       "detail": "Solar panel",
       "amount": 100
@@ -133,7 +133,7 @@
     "model": "coinapp.offering",
     "pk": 12,
     "fields": {
-      "category": 4,
+      "category": "Clothing",
       "heading": "underwear",
       "detail": "UnderWear",
       "amount": 20
@@ -143,7 +143,7 @@
     "model": "coinapp.offering",
     "pk": 13,
     "fields": {
-      "category": 4,
+      "category": "Clothing",
       "heading": "tracksuit",
       "detail": "Track suit pants",
       "amount": 50
@@ -153,7 +153,7 @@
     "model": "coinapp.offering",
     "pk": 14,
     "fields": {
-      "category": 4,
+      "category": "Clothing",
       "heading": "tshirt",
       "detail": "Tshirt",
       "amount": 30
@@ -163,7 +163,7 @@
     "model": "coinapp.offering",
     "pk": 15,
     "fields": {
-      "category": 5,
+      "category": "Shelter",
       "heading": "land",
       "detail": "25 meter/sq land",
       "amount": 5000
@@ -173,45 +173,10 @@
     "model": "coinapp.offering",
     "pk": 16,
     "fields": {
-      "category": 5,
+      "category": "Shelter",
       "heading": "room_rent",
       "detail": "Room rent/month",
       "amount": 500
-    }
-  },
-  {
-    "model": "coinapp.category",
-    "pk": 1,
-    "fields": {
-      "heading": "Food"
-    }
-  },
-  {
-    "model": "coinapp.category",
-    "pk": 2,
-    "fields": {
-      "heading": "Water"
-    }
-  },
-  {
-    "model": "coinapp.category",
-    "pk": 3,
-    "fields": {
-      "heading": "Electronics"
-    }
-  },
-  {
-    "model": "coinapp.category",
-    "pk": 4,
-    "fields": {
-      "heading": "Clothing"
-    }
-  },
-  {
-    "model": "coinapp.category",
-    "pk": 5,
-    "fields": {
-      "heading": "Shelter"
     }
   }
 ]

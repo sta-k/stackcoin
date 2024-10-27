@@ -8,7 +8,7 @@ class TransactionTest(TestCase):
     ]
     def setUp(self):
         self.client = Client()
-        self.url = reverse("home")
+        self.url = reverse("coinapp:home")
     
     def test_login_and_make_transaction(self):
         response = self.client.get(self.url, follow=True) 
