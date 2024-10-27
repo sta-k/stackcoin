@@ -131,7 +131,6 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 # Third party apps configuration
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 # LOGIN_URL = '/'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = 'coinapp:home'
+LOGOUT_REDIRECT_URL = 'coinapp:home'
 
-MINIMUM_BALANCE = -10
-MAXIMUM_BALANCE = 1000

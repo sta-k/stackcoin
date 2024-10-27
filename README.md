@@ -7,8 +7,3 @@ python manage.py migrate
 python manage.py loaddata sample.json
 python manage.py runserver
 ```
-
-TODO
-
-design about page 
-add tests

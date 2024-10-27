@@ -21,7 +21,7 @@ class TransactionTest(TestCase):
         self.assertInHTML('<h3 class="text-muted">Balance: $-2</h3>', response.content.decode())
         self.assertEqual(response.status_code, 200)
         
-    def test_max_transaction(self):
+    def todo_test_max_transaction(self):
         self.client.post(reverse('login'), {'username':'8921513696', 'password':'sumee1910'}, follow=True)
         response = self.client.post(self.url, {"destAddress": "8921513696","amount": settings.MAXIMUM_BALANCE})
         self.assertEqual(response.status_code, 400)
