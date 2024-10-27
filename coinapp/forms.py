@@ -15,7 +15,8 @@ class SignUpForm(UserCreationForm):
             'invalid': 'Please enter a valid mobile number.',
         }
     )
+    tandc = forms.BooleanField(label="Terms and Conditions.")
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ("username", "first_name","password1", "password2","offerings")
+        fields = ("username", "first_name","password1", "password2","offerings","tandc")
         

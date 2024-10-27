@@ -30,6 +30,5 @@ class Transaction(models.Model):
         "User", on_delete=models.PROTECT, related_name="txn_target"
     )
     offering = models.ForeignKey("Offering", on_delete=models.PROTECT)
-    # amount = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 

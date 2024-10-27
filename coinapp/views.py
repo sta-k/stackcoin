@@ -79,12 +79,16 @@ class OfferingView(View):
     def post(self, request):
         offering = Offering.objects.get(id = request.POST["offering"])
         is_active = request.POST.get('is_active')
+        my_offerings = request.user.offerings
         if is_active:
-            request.user.offerings.add(offering)
+            my_offerings.add(offering)
             messages.success(request, f"Offering activated: {offering}.")
         else:
-            request.user.offerings.remove(offering)
-            messages.warning(request, f"Offering deactivated: {offering}.")
+            if my_offerings.count() < 2:
+                messages.warning(request, "Error: At least 1 offering is required..")
+            else:
+                my_offerings.remove(offering)
+                messages.info(request, f"Offering deactivated: {offering}.")
         return redirect("coinapp:offerings")
     
 @login_required

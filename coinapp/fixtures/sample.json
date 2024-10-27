@@ -20,6 +20,34 @@
     }
   },
   {
+    "model": "coinapp.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$7uk62XShpKDDjI51hku0ww$W+FCgplzDmImw71OQ5QKE4meoeFY+U6m9QPf7U9KLPA=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "8921513696",
+        "first_name": "Nusra",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2024-10-27T05:05:52.942Z",
+        "amount": 0,
+        "groups": [],
+        "user_permissions": [],
+        "offerings": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            7,
+            14
+        ]
+    }
+},
+  {
     "model": "coinapp.offering",
     "pk": 1,
     "fields": {
