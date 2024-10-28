@@ -8,7 +8,7 @@ User = get_user_model()
 
 class SignUpForm(UserCreationForm):
     username = forms.CharField(
-        validators=[RegexValidator('^\d{10}$',message="Please enter a valid 10 digit mobile number.")],
+        validators=[RegexValidator(r'^\d{10}$',message="Please enter a valid 10 digit mobile number.")],
         help_text="Enter your 10 digit mobile number.",
         # error_messages={
         #     # 'required': 'Please enter your 10 digit mobile number.',
