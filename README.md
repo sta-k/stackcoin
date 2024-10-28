@@ -77,3 +77,20 @@ While it makes some super rich, it makes most people poor. Poverty is caused by 
 * It causes social and cultural degradation
 
 The elimination of local opportunities to exchange and relate to one another focuses attention on ways of getting money outside the community. Communities fall apart as they become indebted to entities outside their communities.
+
+
+
+### Football comparison
+
+https://www.community-exchange.org/home/qanda/two-games-of-football/
+
+
+Aspect|Game 1: Traditional Money System|Game 2: Community Exchange System (CES)
+--|--|--
+Goal Requirement|Goals must be borrowed from a "goal bank" before the game starts | Goals are not borrowed or stored; points are earned during play
+Interest | Goals borrowed from the bank require a fee (interest) based on usage time|	No interest or borrowing involved
+Goal Supply	|Limited supply; borrowing required due to finite goals	|No supply limit; points are just a record of successful plays
+Scoring	|Teams start with a supply of goals and win by having more than the other team	|Points are gained as teams score; no pre-set goals needed
+End of Game	|Teams aim to have enough goals to repay the bank, plus interest	|Team with the most points wins, taking home a trophy
+Goal Balance	|Losing team hands over goals equal to the score difference	|Winning team has a positive score, and the other has a deficit
+Objective	|End with more goals than the other team, plus extra to repay the bank	|Simply score more points than the other team to win the match
