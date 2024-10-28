@@ -1,3 +1,4 @@
-django-crispy-forms
-Django
-crispy-bootstrap5
+django-crispy-forms==2.3
+Django==5.1.1
+crispy-bootstrap5==2024.2
+python-decouple==3.8
