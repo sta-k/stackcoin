@@ -20,7 +20,7 @@ def incr_counter(key):
         obj.value = 1
     else:
         try:
-            obj.value = obj.value + 1
+            obj.value = int(obj.value) + 1
         except:
             obj.value=1
     obj.save()
