@@ -13,6 +13,22 @@ from coinapp.forms import SignUpForm
 
 User = get_user_model()
 
+from coinapp.models import GeneralSettings
+def incr_counter(key):
+    obj,created = GeneralSettings.objects.get_or_create(key=key)
+    if created:
+        obj.value = 1
+    else:
+        try:
+            obj.value = obj.value + 1
+        except:
+            obj.value=1
+    obj.save()
+
+def about_view(request):
+    incr_counter('about')
+    return render(request, "about.html")
+
 class SignUpView(CreateView):
     form_class = SignUpForm
     success_url = reverse_lazy("coinapp:home")
