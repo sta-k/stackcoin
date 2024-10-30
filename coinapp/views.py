@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.views.generic import CreateView
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views import View
@@ -39,13 +40,13 @@ class HomeView(View):
     def get(self, request):
         transactions = (
             Transaction.objects.filter(
-                Q(creator_person=request.user) | Q(target_person=request.user)
+                Q(seller=request.user) | Q(buyer=request.user)
             )
-            .select_related("creator_person", "target_person","offering")
+            .select_related("seller", "buyer")
             .annotate(
                 is_received=Case(
-                    When(Q(creator_person=request.user), then=False),
-                    default=True,
+                    When(Q(seller=request.user), then=True),
+                    default=False,
                     output_field=BooleanField(),
                 )
             )
@@ -58,26 +59,33 @@ class HomeView(View):
         )
 
     def post(self, request):
-        touser = User.objects.get(username=request.POST["touser"])
-        fromuser = request.user
-        
-        if touser == fromuser:
+        buyer = User.objects.get(username=request.POST["buyer"])
+        seller = request.user
+        amt = request.POST["amount"]
+        if buyer == seller:
             messages.warning(
-                request, "Error! You cannot send funds to your own account."
+                request, "Error! Seller and buyer are same."
             )
-        else:
+        elif amt.isnumeric():
             
-            offering = Offering.objects.get(id = request.POST["offering"])
+            description =  request.POST["description"]
+            # amt = int()
+            # offering = Offering.objects.get(id = request.POST["offering"])
             with transaction.atomic():
-                touser.amount = F("amount") + offering.amount
-                fromuser.amount = F("amount") - offering.amount
-                touser.save()
-                fromuser.save()
+                seller.amount = F("amount") + amt
+                buyer.amount = F("amount") - amt
+                seller.save()
+                buyer.save()
+                
                 txn = Transaction.objects.create(
-                    creator_person=fromuser, target_person=touser, offering=offering
+                    seller=seller, buyer=buyer, description=description, amount = amt
                 )
                 messages.success(request, f"Success! Payment success. txnId:{txn.id}")
         
+        else:
+            messages.warning(
+                request, "Error! Amount must be a number."
+            )
         return redirect("coinapp:home")
 
 
@@ -114,3 +122,9 @@ def load_offerings(request):
     if username:
         offerings = Offering.objects.filter(user__username=username) # User.objects.get(username=username).offerings.all()
     return render(request, 'coinapp/user_offerings_list_options.html', {'offerings': offerings})
+
+
+@login_required
+def get_balance(request):
+    user = User.objects.get(username=request.GET.get('username'))
+    return HttpResponse(user.amount)

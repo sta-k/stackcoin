@@ -30,12 +30,17 @@ class Offering(models.Model):
 
 
 class Transaction(models.Model):
-    creator_person = models.ForeignKey(
-        "User", on_delete=models.PROTECT, related_name="txn_creator"
-    )
-    target_person = models.ForeignKey(
-        "User", on_delete=models.PROTECT, related_name="txn_target"
-    )
-    offering = models.ForeignKey("Offering", on_delete=models.PROTECT)
+    seller = models.ForeignKey(
+        "User", on_delete=models.PROTECT, related_name="txn_seller"
+    ) # creator
+    buyer = models.ForeignKey(
+        "User", on_delete=models.PROTECT, related_name="txn_buer"
+    ) # target
+    description = models.CharField(max_length=255)
+    amount = models.IntegerField(default=0)
+    # offering = models.ForeignKey("Offering", on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+
 

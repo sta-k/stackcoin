@@ -8,22 +8,26 @@
 {% block content %}
 <h3 class="text-muted">Balance: {{request.user.amount}}$</h3>
 <form method="post" action="."> {% csrf_token %}
-    <p class="lead">Send Funds:</p>
+    <p class="lead">Seller transaction:</p>
     <div class="mb-3">
-        <label for="touser" class="form-label">Destination address</label>
-        <select class="form-control" id="id_touser" name="touser">
+        <label for="buyer" class="form-label">Buyer:</label>
+        <select class="form-control" id="id_buyer" name="buyer">
             <option value="">---------</option> 
             {% for user in users %}
             <option value="{{user.username}}">{{user.username}}({{user.first_name}})</option>
             {% endfor %}
         </select>
+        <p class="lead">Balance: <span id="user_balance"></span></p>
     </div>
     <div class="mb-3">
-        <label for="offering" class="form-label">Item</label>
-        <select class="form-control" name="offering" id="id_offering">
-        </select>
+        <label class="form-label">Description:</label>
+        <input type="text" class="form-control" name="description">
     </div>
-    <button type="submit" class="btn btn-primary">Send</button>
+    <div class="mb-3">
+        <label class="form-label">Amount:</label>
+        <input type="text" class="form-control" name="amount">
+    </div>
+    <button type="submit" class="btn btn-primary">Confirm</button>
 </form>
 <hr>
 <p>Total money in existence:${{total}}</p>
@@ -32,11 +36,11 @@
     {% for transaction in transactions %}
     <li class="list-group-item d-flex justify-content-between align-items-start">
         <div class="ms-2 me-auto">
-          <div class="fw-bold">{% if transaction.is_received %}Received from {{transaction.creator_person.first_name}}{% else %}Paid to {{transaction.target_person.first_name}}{% endif %}</div>
+          <div class="fw-bold">{% if transaction.is_received %}Received from {{transaction.buyer.first_name}}{% else %}Paid to {{transaction.seller.first_name}}{% endif %}</div>
           {{transaction.created_at}}<br>
-          {{transaction.offering}}
+          {{transaction.description}}
         </div>
-        <span class="badge text-bg-{% if transaction.is_received %}success{%else%}danger{%endif%} rounded-pill">{% if transaction.is_received %}+{%else%}-{%endif%}${{transaction.offering.amount}}</span>
+        <span class="badge text-bg-{% if transaction.is_received %}success{%else%}danger{%endif%} rounded-pill">{% if transaction.is_received %}+{%else%}-{%endif%}${{transaction.amount}}</span>
     </li>
     {% endfor %}
 </ol>
@@ -46,17 +50,18 @@
 <script src="{% static 'select2/select2.min.js' %}"></script>
 <script>
     $(function () {
-        $('#id_touser').select2();
-        $('#id_touser').val('').trigger('change');
-        $('#id_touser').on('select2:select', function (e) {
+        $('#id_buyer').select2();
+        $('#id_buyer').val('').trigger('change');
+        $('#id_buyer').on('select2:select', function (e) {
             $.ajax({ 
-                url: "{% url 'coinapp:ajax_load_offerings' %}", 
+                url: "{% url 'coinapp:ajax_get_balance' %}", 
                 data: {'username': e.params.data.id},
                 success: function (data) {
-                  $("#id_offering").html(data);
+                    $("#user_balance").html(data);
                 }
             });
         });
+
     });
 </script>
 {% endblock %}
