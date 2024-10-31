@@ -65,11 +65,13 @@
         <div class="fw-bold">#{{useroffering.offering.pk}}:{{useroffering.offering.heading}}</div>
         Category: {{useroffering.offering.category}}<br>
         {{useroffering.offering.detail}}<br>
+        {% if request.user == user %}
         <form method="post" action=".">{% csrf_token %}
           <input type="hidden" name="action" value="remove">
           <input type="hidden" name="offering" value="{{useroffering.offering.id}}">
           <button type="submit" class="btn btn-link">remove</button>
         </form>
+        {% endif %}
       </div>
       <h5><span class="badge text-bg-secondary">{{useroffering.rate}}</span></h5>
   </li>

@@ -16,7 +16,9 @@ User = get_user_model()
 
 
 def about_view(request):
-    GeneralSettings.objects.filter(key="about").update(value=F("value") + 1)
+    about_count = GeneralSettings.objects.get(key="about")
+    about_count.value= int(about_count.value) + 1
+    about_count.save()
     return render(request, "about.html")
 
 
