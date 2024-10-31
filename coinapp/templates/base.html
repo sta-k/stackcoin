@@ -1,7 +1,7 @@
 {% load static %}
 
 {% url 'coinapp:home' as url_home %}
-{% url 'coinapp:offerings' as url_offerings %}
+{% url 'coinapp:user_list' as url_users %}
 {% url 'login' as url_login %}
 {% url 'signup' as url_signup %}
 {% url 'about' as url_about %}
@@ -40,22 +40,21 @@
                 {% if user.is_authenticated %}                  
                   <li class="nav-item">
                     <a class="nav-link{% if request.path == url_home %} active{% endif %}" href="{{url_home}}">Home</a>
+                  </li>                  
+                {% else %}                  
+                  <li class="nav-item">
+                    <a class="nav-link{% if request.path == url_login %} active{% endif %}" href="{{url_login}}">Log in</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link{% if url_offerings in request.path %} active{% endif %}" href="{{url_offerings}}">Offerings </a>
-                  </li>
-                {% else %}
-                  
-                  <li class="nav-item">
-                    <a class="nav-link{% if request.path == url_login  %} active{% endif %}" href="{{url_login}}">Log in</a>
+                    <a class="nav-link{% if request.path == url_signup %} active{% endif %}" href="{{url_signup}}">Sign up</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link{% if request.path == url_signup  %} active{% endif %}" href="{{url_signup}}">Sign up</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link{% if request.path == url_about  %} active{% endif %}" href="{{url_about}}">About</a>
+                    <a class="nav-link{% if request.path == url_about %} active{% endif %}" href="{{url_about}}">About</a>
                   </li>
                 {% endif %}
+                  <li class="nav-item">
+                    <a class="nav-link{% if url_users in request.path %} active{% endif %}" href="{{url_users}}" href="{{url_users}}">Users</a>
+                  </li>
               </ul>
                 
               

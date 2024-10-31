@@ -10,7 +10,7 @@ class GeneralSettings(models.Model):
 
 class User(AbstractUser):
     amount = models.IntegerField(default=0)
-    offerings = models.ManyToManyField("Offering")
+    offerings = models.ManyToManyField("Offering", through="UserOffering")
 
 class Offering(models.Model):
     CAT_CHOICES = (
@@ -22,11 +22,16 @@ class Offering(models.Model):
     )
     heading = models.CharField(max_length=255)
     detail = models.CharField(max_length=255)
-    amount = models.IntegerField(default=0)
+    # users = models.ManyToManyField("User", through="UserOffering")
     category = models.CharField(max_length=20,choices=CAT_CHOICES)
 
     def __str__(self):
-        return f'{self.category} -> {self.heading}: ${self.amount}({self.detail[:30]}...)'
+        return f'{self.category} -> {self.heading}({self.detail[:30]}...)'
+
+class UserOffering(models.Model):
+    rate = models.CharField(max_length=255)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    offering = models.ForeignKey(Offering, on_delete=models.CASCADE)
 
 
 class Transaction(models.Model):
