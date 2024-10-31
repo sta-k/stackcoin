@@ -8,7 +8,7 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{% url 'coinapp:user_list' %}">Users</a></li>
-    <li class="breadcrumb-item active" aria-current="page">{{user.username}}</li>
+    <li class="breadcrumb-item active" aria-current="page">{{current_user.username}}</li>
   </ol>
 </nav>
 
@@ -16,22 +16,22 @@
 
 <div class="row">
   <div class="col-md-4">
-      <img class="img-thumbnail" src="{{ user.username|gravatar_url:200 }}" width="200" height="200" alt="@{{ user.username}}">
+      <img class="img-thumbnail" src="{{ current_user.username|gravatar_url:200 }}" width="200" height="200" alt="@{{ current_user.username}}">
   </div>
   <div class="col-md-8">
   	<div class="card">
     <table class="table mb-0">
       
       <tbody>
-      	<tr><td>Username</td><td>{{user.username}}</td></tr>
-      	<tr><td>Name</td><td>{{user.first_name}}</td></tr>
-      	<tr><td>Balance</td><td>{{user.amount}}</td></tr>
+      	<tr><td>Username</td><td>{{current_user.username}}</td></tr>
+      	<tr><td>Name</td><td>{{current_user.first_name}}</td></tr>
+      	<tr><td>Balance</td><td>{{current_user.amount}}</td></tr>
       </tbody>
     </table>
 	</div>
   </div>
 </div>
-{% if request.user == user %}
+{% if request.user == current_user %}
 <br>
 <div class="card mb-3">
   <div class="card-header">Add new offering</div>
@@ -65,7 +65,7 @@
         <div class="fw-bold">#{{useroffering.offering.pk}}:{{useroffering.offering.heading}}</div>
         Category: {{useroffering.offering.category}}<br>
         {{useroffering.offering.detail}}<br>
-        {% if request.user == user %}
+        {% if request.user == current_user %}
         <form method="post" action=".">{% csrf_token %}
           <input type="hidden" name="action" value="remove">
           <input type="hidden" name="offering" value="{{useroffering.offering.id}}">

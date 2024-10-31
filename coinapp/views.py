@@ -99,7 +99,7 @@ class UserDetail(View):
         return render(
             request,
             "coinapp/user_detail.html",
-            {"user": user, "offerings": offerings,"transactions": get_transactions(user), "userofferings": userofferings},
+            {"current_user": user, "offerings": offerings,"transactions": get_transactions(user), "userofferings": userofferings},
         )
 
     @method_decorator(login_required)
