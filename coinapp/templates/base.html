@@ -19,13 +19,14 @@
   <body>    
     <div class="container my-4">
       <div class="row justify-content-center">
-        <div class="col-md-6 col-sm-12">
+        <div class="col-lg-6 col-md-8 col-sm-12">
           <div class="row justify-content-center">
-            <div class="col-6 text-end">
+            <div class="text-end">
               {% if user.is_authenticated %}
-                <div style="float: right;">                  
-                    <strong>{{ user.username }}</strong>                  
-                    | <form method="post" style="display:inline!important;" action="{% url 'logout' %}">
+                <div style="float: right;">
+                  <a href="{% url 'coinapp:user_detail' user=user.id %}">               
+                    <strong>{{ user.username }}</strong>    
+                  </a>  | <form method="post" style="display:inline!important;" action="{% url 'logout' %}">
                       {% csrf_token %}
                       <button class="btn btn-link" type="submit">logout</button>
                   </form>

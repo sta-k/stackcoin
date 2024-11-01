@@ -18,7 +18,7 @@
 <br>
 <div class="row">
 {% for user in users %}
-  <div class="col-sm-3">
+  <div class="col-6 col-md-3 mb-4">
     <div class="media">
       <a href="{% url 'coinapp:user_detail' user=user.id %}">
         <img class="mr-3" src="{{ user.username|gravatar_url:50 }}" alt="{{user.first_name}}">
@@ -26,7 +26,7 @@
       <div class="media-body" style="font-size: 12px">
         <!-- <a href="#">{{user.get_full_name}}</a><br> -->
         <a href="{% url 'coinapp:user_detail' user=user.id %}">{{user.username}}</a><br>
-        <strong>{{user.amount}}</strong><br>
+        Balance: <strong>{{user.amount}}</strong><br>
         {{user.first_name}}
       </div>
     </div>
@@ -36,25 +36,5 @@
 {% endfor %}
 </div>
 
-{% if is_paginated %}
-  <ul class="pagination float-right">
-    {% if page_obj.has_previous %}
-      <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
-    {% else %}
-      <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
-    {% endif %}
-    {% for i in paginator.page_range %}
-      {% if page_obj.number == i %}
-        <li class="page-item active"><span class="page-link" >{{ i }} <span class="sr-only">(current)</span></span></li>
-      {% else %}
-        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
-      {% endif %}
-    {% endfor %}
-    {% if page_obj.has_next %}
-      <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
-    {% else %}
-      <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
-    {% endif %}
-  </ul>
-{% endif %}
+{% include '_pagination.html' %}
 {% endblock %}

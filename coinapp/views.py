@@ -48,7 +48,7 @@ class HomeView(View):
         return render(
             request,
             "home.html",
-            {"transactions": get_transactions(request.user), "users": users, "total": total},
+            {"transactions": get_transactions(request.user)[:5], "users": users, "total": total},
         )
 
     def post(self, request):
@@ -77,7 +77,7 @@ class HomeView(View):
 
 
 class UserList(ListView):
-    paginate_by = 36
+    paginate_by = 4
     template_name = "coinapp/user_list.html"
     context_object_name = "users"
 

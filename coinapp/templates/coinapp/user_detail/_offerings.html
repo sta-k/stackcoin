@@ -1,0 +1,47 @@
+{% if request.user == current_user %}
+
+<div class="card mb-3">
+  <div class="card-header">Add new offering</div>
+  <div class="card-body">
+    <form method="post" action=".">{% csrf_token %}
+      <input type="hidden" name="action" value="add">
+      <div class="mb-3">
+        <label for="id_offering" class="form-label">Offering:</label>
+        <select class="form-control" id="id_offering" name="offering">
+            <option value="">---------</option> 
+            {% for offering in offerings %}
+            <option value="{{offering.id}}">{{offering}}</option>
+            {% endfor %}
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Rate:</label>
+        <input type="text" placeholder="100$ per hour" class="form-control" id="id_rate" name="rate">
+      </div>
+      <button type="submit" class="btn btn-success">Save</button>
+    </form>
+  </div>
+</div>
+<hr>
+{% endif %}
+
+<p class="lead">Offerings</p>
+<ol class="list-group list-group-numbered">
+  {% for useroffering in userofferings %}
+  <li class="list-group-item d-flex justify-content-between align-items-start">
+      <div class="ms-2 me-auto">
+        <div class="fw-bold">#{{useroffering.offering.pk}}:{{useroffering.offering.heading}}</div>
+        Category: {{useroffering.offering.category}}<br>
+        {{useroffering.offering.detail}}<br>
+        {% if request.user == current_user %}
+        <form method="post" action=".">{% csrf_token %}
+          <input type="hidden" name="action" value="remove">
+          <input type="hidden" name="offering" value="{{useroffering.offering.id}}">
+          <button type="submit" class="btn btn-link">remove</button>
+        </form>
+        {% endif %}
+      </div>
+      <h5><span class="badge text-bg-secondary">{{useroffering.rate}}</span></h5>
+  </li>
+  {% endfor %}
+</ol>

@@ -3,6 +3,10 @@
 {% load quiz_extras %}
 {% block css %}
 <link rel="stylesheet" href="{% static 'select2/select2.min.css' %}">
+<style>
+  .tab-pane {margin-top: 20px}
+</style>
+
 {% endblock %}
 {% block content %} 
 <nav aria-label="breadcrumb">
@@ -12,74 +16,48 @@
   </ol>
 </nav>
 
+<ul class="nav nav-tabs" id="myTab" role="tablist">
 
-
-<div class="row">
-  <div class="col-md-4">
-      <img class="img-thumbnail" src="{{ current_user.username|gravatar_url:200 }}" width="200" height="200" alt="@{{ current_user.username}}">
-  </div>
-  <div class="col-md-8">
-  	<div class="card">
-    <table class="table mb-0">
-      
-      <tbody>
-      	<tr><td>Username</td><td>{{current_user.username}}</td></tr>
-      	<tr><td>Name</td><td>{{current_user.first_name}}</td></tr>
-      	<tr><td>Balance</td><td>{{current_user.amount}}</td></tr>
-      </tbody>
-    </table>
-	</div>
-  </div>
-</div>
-{% if request.user == current_user %}
-<br>
-<div class="card mb-3">
-  <div class="card-header">Add new offering</div>
-  <div class="card-body">
-    <form method="post" action=".">{% csrf_token %}
-      <input type="hidden" name="action" value="add">
-      <div class="mb-3">
-        <label for="id_offering" class="form-label">Offering:</label>
-        <select class="form-control" id="id_offering" name="offering">
-            <option value="">---------</option> 
-            {% for offering in offerings %}
-            <option value="{{offering.id}}">{{offering}}</option>
-            {% endfor %}
-        </select>
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Rate:</label>
-        <input type="text" placeholder="100$ per hour" class="form-control" id="id_rate" name="rate">
-      </div>
-      <button type="submit" class="btn btn-success">Save</button>
-    </form>
-  </div>
-</div>
-{% endif %}
-<hr>
-<p class="lead">Offerings</p>
-<ol class="list-group list-group-numbered">
-  {% for useroffering in userofferings %}
-  <li class="list-group-item d-flex justify-content-between align-items-start">
-      <div class="ms-2 me-auto">
-        <div class="fw-bold">#{{useroffering.offering.pk}}:{{useroffering.offering.heading}}</div>
-        Category: {{useroffering.offering.category}}<br>
-        {{useroffering.offering.detail}}<br>
-        {% if request.user == current_user %}
-        <form method="post" action=".">{% csrf_token %}
-          <input type="hidden" name="action" value="remove">
-          <input type="hidden" name="offering" value="{{useroffering.offering.id}}">
-          <button type="submit" class="btn btn-link">remove</button>
-        </form>
-        {% endif %}
-      </div>
-      <h5><span class="badge text-bg-secondary">{{useroffering.rate}}</span></h5>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="true">Profile</button>
   </li>
-  {% endfor %}
-</ol>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="offerings-tab" data-bs-toggle="tab" data-bs-target="#offerings-tab-pane" type="button" role="tab" aria-controls="offerings-tab-pane" aria-selected="false">Offerings</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="transactions-tab" data-bs-toggle="tab" data-bs-target="#transactions-tab-pane" type="button" role="tab" aria-controls="transactions-tab-pane" aria-selected="false">Transactions</button>
+  </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+    <div class="row">
+      <div class="col-md-4">
+          <img class="img-thumbnail" src="{{ current_user.username|gravatar_url:200 }}" width="200" height="200" alt="@{{ current_user.username}}">
+      </div>
+      <div class="col-md-8">
+        <div class="card">
+          <table class="table mb-0">
+            
+            <tbody>
+              <tr><td>Username</td><td>{{current_user.username}}</td></tr>
+              <tr><td>Name</td><td>{{current_user.first_name}}</td></tr>
+              <tr><td>Balance</td><td>{{current_user.amount}}</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="offerings-tab-pane" role="tabpanel" aria-labelledby="offerings-tab" tabindex="0">
+    {% include 'coinapp/user_detail/_offerings.html' %}
+  </div>
+  <div class="tab-pane fade" id="transactions-tab-pane" role="tabpanel" aria-labelledby="transactions-tab" tabindex="0">
+    <p class="lead">Transactions</p>
+    {% include 'coinapp/user_detail/_transactions.html' %}
+  </div>
+</div>
 
-<hr>
-{% include 'coinapp/_transactions.html' %}
+
 {% endblock %}
 
 
