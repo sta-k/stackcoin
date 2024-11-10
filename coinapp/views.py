@@ -77,7 +77,7 @@ class HomeView(View):
 
 
 class UserList(ListView):
-    paginate_by = 4
+    paginate_by = 20
     template_name = "coinapp/user_list.html"
     context_object_name = "users"
 
