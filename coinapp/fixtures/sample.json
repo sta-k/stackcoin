@@ -1,4 +1,21 @@
-[  
+[
+  {
+    "model": "coinapp.generalsettings",
+    "pk": 1,
+    "fields": {
+      "key": "about",
+      "value": "71"
+    }
+  },
+  {
+    "model": "coinapp.exchange",
+    "pk": 1,
+    "fields": {
+      "code": "KKDE",
+      "title": "Kolakkode Exchange",
+      "address": ""
+    }
+  },
   {
     "model": "coinapp.user",
     "pk": 1,
@@ -6,297 +23,333 @@
       "password": "pbkdf2_sha256$870000$IxqwLJE4C5uhlLF9LBpiOj$jS5VbK7A61RD9t7SpPo2ucLwNLVR03iIATavqJ/l/Sc=",
       "last_login": "2024-10-26T14:39:23.475Z",
       "is_superuser": false,
+      "username": "8547622462",
       "first_name": "Sulaiman",
       "last_name": "",
       "email": "",
       "is_staff": false,
       "is_active": true,
       "date_joined": "2024-10-26T14:39:22.900Z",
-      "username": "8547622462",
       "amount": 0,
       "groups": [],
       "user_permissions": [],
-      "offerings": [15]
+      "exchange": 1
     }
   },
   {
     "model": "coinapp.user",
     "pk": 2,
     "fields": {
-        "password": "pbkdf2_sha256$870000$7uk62XShpKDDjI51hku0ww$W+FCgplzDmImw71OQ5QKE4meoeFY+U6m9QPf7U9KLPA=",
-        "last_login": null,
-        "is_superuser": false,
-        "username": "8921513696",
-        "first_name": "Nusra",
-        "last_name": "",
-        "email": "",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2024-10-27T05:05:52.942Z",
-        "amount": 0,
-        "groups": [],
-        "user_permissions": [],
-        "offerings": [
-            1,
-            2,
-            3,
-            4,
-            5,
-            7,
-            14
-        ]
+      "password": "pbkdf2_sha256$870000$7uk62XShpKDDjI51hku0ww$W+FCgplzDmImw71OQ5QKE4meoeFY+U6m9QPf7U9KLPA=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "8921513696",
+      "first_name": "Nusra",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-10-27T05:05:52.942Z",
+      "amount": 0,
+      "groups": [],
+      "user_permissions": [],
+      "exchange": 1
     }
-},{
+  },
+  {
+    "model": "coinapp.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$tlzrUM09WmpZraNyZqZEHe$y8Co+0oOeX9EOrsinShPGf9F0B4nv6hhazxqm/EliuA=",
+      "last_login": "2024-10-30T11:04:57.884Z",
+      "is_superuser": false,
+      "username": "7356775981",
+      "first_name": "suhail vs",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-10-30T04:31:50.285Z",
+      "amount": -170,
+      "groups": [],
+      "user_permissions": [],
+      "exchange": 1
+    }
+  },
+  {
+    "model": "coinapp.user",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$eQLviIgRhoZDDoHZLTAFBS$aseC+7p5O5jntVioAhpkZHoGVYdR4xp490e/0WaMwdI=",
+      "last_login": "2024-10-30T10:47:40.966Z",
+      "is_superuser": false,
+      "username": "8848338141",
+      "first_name": "sabareesh",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-10-30T04:36:30.239Z",
+      "amount": 170,
+      "groups": [],
+      "user_permissions": [],
+      "exchange": 1
+    }
+  },
+  {
+    "model": "coinapp.user",
+    "pk": 5,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$HjGLW83SX3cIs92GX2WY4T$QbSW0VOVvtTpjWEC/11waCFmRHUhH1GHI+1Vn97bAto=",
+      "last_login": "2024-10-30T16:52:10.062Z",
+      "is_superuser": true,
+      "username": "admin",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2024-10-30T16:51:31.762Z",
+      "amount": 0,
+      "groups": [],
+      "user_permissions": [],
+      "exchange": 1
+    }
+  },
+  {
+    "model": "coinapp.category",
+    "pk": 1,
+    "fields": {
+      "name": "Food",
+      "detail": ""
+    }
+  },
+  {
+    "model": "coinapp.category",
+    "pk": 2,
+    "fields": {
+      "name": "Electronics",
+      "detail": ""
+    }
+  },
+  {
+    "model": "coinapp.category",
+    "pk": 3,
+    "fields": {
+      "name": "Clothing",
+      "detail": ""
+    }
+  },
+  {
+    "model": "coinapp.category",
+    "pk": 4,
+    "fields": {
+      "name": "Shelter",
+      "detail": ""
+    }
+  },
+  {
     "model": "coinapp.offering",
     "pk": 1,
     "fields": {
-        "heading": "rice",
-        "detail": "Matta rice",
-        "category": "Food"
+      "user": 1,
+      "category": 1,
+      "heading": "rice",
+      "detail": "Matta rice",
+      "rate": "50$ per kg",
+      "is_active": true,
+      "created_at": "2024-12-23T10:22:23.271Z"
     }
-},
-{
+  },
+  {
     "model": "coinapp.offering",
     "pk": 2,
     "fields": {
-        "heading": "coconut",
-        "detail": "Thenga. Coconut for chutney and curry.",
-        "category": "Food"
+      "user": 1,
+      "category": 1,
+      "heading": "coconut",
+      "detail": "Thenga. Coconut for chutney and curry.",
+      "rate": "20$ per piece",
+      "is_active": true,
+      "created_at": "2024-12-23T10:22:23.279Z"
     }
-},
-{
+  },
+  {
     "model": "coinapp.offering",
     "pk": 3,
     "fields": {
-        "heading": "egg",
-        "detail": "Egg recipies per piece",
-        "category": "Food"
+      "user": 1,
+      "category": 1,
+      "heading": "egg",
+      "detail": "Egg recipies per piece",
+      "rate": "8$ per piece",
+      "is_active": true,
+      "created_at": "2024-12-23T10:22:23.285Z"
     }
-},
-{
+  },
+  {
     "model": "coinapp.offering",
     "pk": 4,
     "fields": {
-        "heading": "brinjal",
-        "detail": "Vazhuthanangal, per kg",
-        "category": "Food"
+      "user": 1,
+      "category": 1,
+      "heading": "brinjal",
+      "detail": "Vazhuthanangal, per kg",
+      "rate": "20$ per kg",
+      "is_active": true,
+      "created_at": "2024-12-23T10:22:23.291Z"
     }
-},
-{
+  },
+  {
     "model": "coinapp.offering",
     "pk": 5,
     "fields": {
-        "heading": "mulak_podi",
-        "detail": "Mulaku podi per 100gram",
-        "category": "Food"
+      "user": 1,
+      "category": 1,
+      "heading": "mulak_podi",
+      "detail": "Mulaku podi per 100gram",
+      "rate": "40$ per 100grams",
+      "is_active": true,
+      "created_at": "2024-12-23T10:22:23.296Z"
     }
-},
-{
+  },
+  {
     "model": "coinapp.offering",
     "pk": 6,
     "fields": {
-        "heading": "salt",
-        "detail": "uppu per kg",
-        "category": "Food"
+      "user": 1,
+      "category": 1,
+      "heading": "salt",
+      "detail": "uppu per kg",
+      "rate": "20$ per kg",
+      "is_active": true,
+      "created_at": "2024-12-23T10:22:23.302Z"
     }
-},
-{
+  },
+  {
     "model": "coinapp.offering",
     "pk": 7,
     "fields": {
-        "heading": "earphone",
-        "detail": "Earphone",
-        "category": "Electronics"
+      "user": 1,
+      "category": 2,
+      "heading": "earphone",
+      "detail": "Earphone",
+      "rate": "800$ per piece",
+      "is_active": true,
+      "created_at": "2024-12-23T10:22:23.310Z"
     }
-},
-{
+  },
+  {
     "model": "coinapp.offering",
     "pk": 8,
     "fields": {
-        "heading": "mp3_player",
-        "detail": "MP3 Player for listening songs",
-        "category": "Electronics"
+      "user": 1,
+      "category": 2,
+      "heading": "mp3_player",
+      "detail": "MP3 Player for listening songs",
+      "rate": "5000$ per piece",
+      "is_active": true,
+      "created_at": "2024-12-23T10:22:23.321Z"
     }
-},
-{
+  },
+  {
     "model": "coinapp.offering",
     "pk": 9,
     "fields": {
-        "heading": "solarpanel",
-        "detail": "Solar panel",
-        "category": "Electronics"
+      "user": 1,
+      "category": 2,
+      "heading": "solarpanel",
+      "detail": "Solar panel",
+      "rate": "2000$ per piece",
+      "is_active": true,
+      "created_at": "2024-12-23T10:22:23.333Z"
     }
-},
-{
+  },
+  {
     "model": "coinapp.offering",
     "pk": 10,
     "fields": {
-        "heading": "underwear",
-        "detail": "UnderWear",
-        "category": "Clothing"
+      "user": 1,
+      "category": 3,
+      "heading": "underwear",
+      "detail": "UnderWear",
+      "rate": "200$ per piece",
+      "is_active": true,
+      "created_at": "2024-12-23T10:22:23.349Z"
     }
-},
-{
+  },
+  {
     "model": "coinapp.offering",
     "pk": 11,
     "fields": {
-        "heading": "tracksuit",
-        "detail": "Track suit pants",
-        "category": "Clothing"
+      "user": 1,
+      "category": 3,
+      "heading": "tracksuit",
+      "detail": "Track suit pants",
+      "rate": "600$ per piece",
+      "is_active": true,
+      "created_at": "2024-12-23T10:22:23.359Z"
     }
-},
-{
+  },
+  {
     "model": "coinapp.offering",
     "pk": 12,
     "fields": {
-        "heading": "tshirt",
-        "detail": "Tshirt",
-        "category": "Clothing"
+      "user": 1,
+      "category": 3,
+      "heading": "tshirt",
+      "detail": "Tshirt",
+      "rate": "300$ per piece",
+      "is_active": true,
+      "created_at": "2024-12-23T10:22:23.370Z"
     }
-},
-{
+  },
+  {
     "model": "coinapp.offering",
     "pk": 13,
     "fields": {
-        "heading": "land",
-        "detail": "25 meter/sq land",
-        "category": "Shelter"
+      "user": 1,
+      "category": 4,
+      "heading": "land",
+      "detail": "25 meter/sq land",
+      "rate": "50000$ per cent",
+      "is_active": true,
+      "created_at": "2024-12-23T10:22:23.388Z"
     }
-},
-{
+  },
+  {
     "model": "coinapp.offering",
     "pk": 14,
     "fields": {
-        "heading": "room_rent",
-        "detail": "Room rent/month",
-        "category": "Shelter"
+      "user": 1,
+      "category": 4,
+      "heading": "room_rent",
+      "detail": "Room rent/month",
+      "rate": "5000$ per month",
+      "is_active": true,
+      "created_at": "2024-12-23T10:22:23.399Z"
     }
-},
-{
-    "model": "coinapp.useroffering",
+  },
+  {
+    "model": "coinapp.transaction",
     "pk": 1,
     "fields": {
-        "rate": "50$ per kg",
-        "user": 1,
-        "offering": 1
+      "seller": 4,
+      "buyer": 3,
+      "description": "Badminton Court - Amigos Oct 29",
+      "amount": 70,
+      "created_at": "2024-10-30T04:38:30.192Z"
     }
-},
-{
-    "model": "coinapp.useroffering",
+  },
+  {
+    "model": "coinapp.transaction",
     "pk": 2,
     "fields": {
-        "rate": "20$ per piece",
-        "user": 1,
-        "offering": 2
+      "seller": 4,
+      "buyer": 3,
+      "description": "Chumma tha",
+      "amount": 100,
+      "created_at": "2024-10-30T10:48:05.234Z"
     }
-},
-{
-    "model": "coinapp.useroffering",
-    "pk": 3,
-    "fields": {
-        "rate": "8$ per piece",
-        "user": 1,
-        "offering": 3
-    }
-},
-{
-    "model": "coinapp.useroffering",
-    "pk": 4,
-    "fields": {
-        "rate": "20$ per kg",
-        "user": 1,
-        "offering": 4
-    }
-},
-{
-    "model": "coinapp.useroffering",
-    "pk": 5,
-    "fields": {
-        "rate": "40$ per 100grams",
-        "user": 1,
-        "offering": 5
-    }
-},
-{
-    "model": "coinapp.useroffering",
-    "pk": 6,
-    "fields": {
-        "rate": "20$ per kg",
-        "user": 1,
-        "offering": 6
-    }
-},
-{
-    "model": "coinapp.useroffering",
-    "pk": 7,
-    "fields": {
-        "rate": "800$ per piece",
-        "user": 1,
-        "offering": 7
-    }
-},
-{
-    "model": "coinapp.useroffering",
-    "pk": 8,
-    "fields": {
-        "rate": "5000$ per piece",
-        "user": 1,
-        "offering": 8
-    }
-},
-{
-    "model": "coinapp.useroffering",
-    "pk": 9,
-    "fields": {
-        "rate": "2000$ per piece",
-        "user": 1,
-        "offering": 9
-    }
-},
-{
-    "model": "coinapp.useroffering",
-    "pk": 10,
-    "fields": {
-        "rate": "200$ per piece",
-        "user": 1,
-        "offering": 10
-    }
-},
-{
-    "model": "coinapp.useroffering",
-    "pk": 11,
-    "fields": {
-        "rate": "600$ per piece",
-        "user": 1,
-        "offering": 11
-    }
-},
-{
-    "model": "coinapp.useroffering",
-    "pk": 12,
-    "fields": {
-        "rate": "300$ per piece",
-        "user": 1,
-        "offering": 12
-    }
-},
-{
-    "model": "coinapp.useroffering",
-    "pk": 13,
-    "fields": {
-        "rate": "50000$ per cent",
-        "user": 1,
-        "offering": 13
-    }
-},
-{
-    "model": "coinapp.useroffering",
-    "pk": 14,
-    "fields": {
-        "rate": "5000$ per month",
-        "user": 1,
-        "offering": 14
-    }
-}
+  }
 ]
-

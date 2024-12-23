@@ -19,5 +19,5 @@ class SignUpForm(UserCreationForm):
     tandc = forms.BooleanField(label="Terms and Conditions.")
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ("username", "first_name","password1", "password2","offerings","tandc")
+        fields = ("username", "first_name","password1", "password2","tandc")
         

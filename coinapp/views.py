@@ -9,7 +9,7 @@ from django.db.models import Q, F, BooleanField, Case, When, Sum
 from django.db import transaction
 from django.contrib import messages
 from django.urls import reverse_lazy
-from coinapp.models import Transaction, Offering, UserOffering, GeneralSettings
+from coinapp.models import Transaction, Offering, Category, GeneralSettings
 from coinapp.forms import SignUpForm
 
 User = get_user_model()
@@ -94,33 +94,36 @@ class UserList(ListView):
 class UserDetail(View):
     def get(self, request, **kwargs):
         user = User.objects.get(id=kwargs["user"])
-        offerings = Offering.objects.order_by("-heading")
-        userofferings = UserOffering.objects.select_related('offering').filter(user=user)
+        categories = Category.objects.order_by("name")
+        userofferings = Offering.objects.select_related('category').filter(user=user)
         return render(
             request,
             "coinapp/user_detail.html",
-            {"current_user": user, "offerings": offerings,"transactions": get_transactions(user), "userofferings": userofferings},
+            {"current_user": user, "categories": categories,"transactions": get_transactions(user), "userofferings": userofferings},
         )
 
     @method_decorator(login_required)
     def post(self, request, **kwargs):
         if request.user.pk == kwargs["user"]:
-            offering = Offering.objects.get(id=request.POST["offering"])
-            my_offerings = request.user.offerings
+            # offering = Offering.objects.get(id=request.POST["offering"])
+            # my_offerings = request.user.offerings
             user_action = request.POST["action"]
             if user_action == "add":
-                UserOffering.objects.update_or_create(
+                offering=Offering.objects.create(
                     user=request.user,
-                    offering=offering,
-                    defaults={'rate':request.POST['rate']}
+                    category=request.POST['category'],
+                    heading=request.POST['heading'],
+                    detail=request.POST['detail'],
+                    rate=request.POST['rate'],
                 )
                 messages.success(request, f"Offering activated: {offering}.")            
             elif user_action == "remove":
-                if my_offerings.count() < 2:
-                    messages.warning(request, "Error: 1 offering is required..")
-                else:
-                    my_offerings.remove(offering)
-                    messages.info(request, f"Offering deactivated: {offering}.")
+                print('Need to remove offering')
+                # if my_offerings.count() < 2:
+                #     messages.warning(request, "Error: 1 offering is required..")
+                # else:
+                #     my_offerings.remove(offering)
+                #     messages.info(request, f"Offering deactivated: {offering}.")
             else:
                 messages.warning(request, "Error: Invalid Action..")
         else:

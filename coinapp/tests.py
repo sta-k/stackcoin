@@ -2,6 +2,8 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.conf import settings
 
+
+
 class TransactionTest(TestCase):
     fixtures = [
        "sample.json",
@@ -30,3 +32,29 @@ class TransactionTest(TestCase):
     def test_max_transaction(self):
         # settings.MAXIMUM_BALANCE exceeded then 400
         pass
+
+
+
+class OfferingPageTest(TestCase):
+    fixtures = [
+       "sample.json",
+    ]
+    def setUp(self):
+        self.client = Client()
+        self.url = reverse("coinapp:user_detail",kwargs={'user':1})
+    
+    def test_offerings_list(self):
+        print(self.url)
+        response = self.client.get(self.url) 
+        rice_offering = '''
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+                <div class="fw-bold">#1:rice</div>
+                Category: Food<br>
+                Matta rice<br>                
+            </div>
+            <h5><span class="badge text-bg-secondary">50$ per kg</span></h5>
+        </li>
+        '''
+
+        self.assertInHTML(rice_offering, response.content.decode())

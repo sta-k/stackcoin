@@ -1,5 +1,13 @@
-from coinapp.models import Offering, UserOffering, User
+from coinapp.models import Offering, Category,User, Exchange
 def load_offerings():
+    exch,_ =Exchange.objects.get_or_create(
+        code='KKDE',
+        title='Kolakkode Exchange'
+    )
+    print(exch)
+    user,_ = User.objects.get_or_create(username='7356775981',first_name='suhail',exchange=exch)
+    user.set_password('sumee1910')
+    user.save()
     offerings = [
         ["Food", "rice", "Matta rice", "50$ per kg"],
         ["Food", "coconut", "Thenga. Coconut for chutney and curry.", "20$ per piece"],
@@ -16,25 +24,19 @@ def load_offerings():
         ["Shelter", "land", "25 meter/sq land", "50000$ per cent"],
         ["Shelter", "room_rent", "Room rent/month", "5000$ per month"]
     ]
-
+    
     for o in offerings:
+        cat,_ = Category.objects.get_or_create(name=o[0])
         result = Offering.objects.update_or_create(
-            category=o[0],
+            user = user,
+            category=cat,
             heading=o[1],        
-            defaults={"detail":o[2]}
+            defaults={"detail":o[2],"rate":o[3]}
         )
         if result[1]:
             print('created offering',result)
-        user = User.objects.filter(username='7356775981').first()
-        if not user:
-            user = User.objects.create_user(username='7356775981',password='sumee1910',first_name='suhail vs')
-        result = UserOffering.objects.update_or_create(
-            offering = result[0],
-            user = user,
-            rate = o[3]
-        )
-        if result[1]:
-            print('created user offering',result)
+        
+        
         
 
 def a():
