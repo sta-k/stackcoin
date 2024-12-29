@@ -31,20 +31,26 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
-    
-class Offering(models.Model):    
+
+
+class Listing(models.Model):   
+    LISTING_CHOICES = [
+        ('O', 'Offering'),
+        ('W', 'Wants'),
+    ] 
     user = models.ForeignKey('User', on_delete=models.CASCADE)
-    category = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True)
+    category = models.ForeignKey('Category', on_delete=models.CASCADE)
     heading = models.CharField(max_length=255)
     detail = models.CharField(max_length=255)    
-    rate = models.CharField(max_length=100)
-    is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    rate = models.CharField(max_length=100, blank=True)
+    listing_type = models.CharField(max_length=1, choices=LISTING_CHOICES)
+
+    # is_active = models.BooleanField(default=True)
+    # created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'{self.heading}({self.detail[:30]}...)'
-
-
+    
 class Transaction(models.Model):
     seller = models.ForeignKey(
         "User", on_delete=models.CASCADE, related_name="txn_seller"

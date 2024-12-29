@@ -149,185 +149,157 @@
     }
   },
   {
-    "model": "coinapp.offering",
+    "model": "coinapp.listing",
     "pk": 1,
     "fields": {
       "user": 1,
       "category": 1,
       "heading": "rice",
       "detail": "Matta rice",
-      "rate": "50$ per kg",
-      "is_active": true,
-      "created_at": "2024-12-23T10:22:23.271Z"
+      "rate": "50$ per kg"
     }
   },
   {
-    "model": "coinapp.offering",
+    "model": "coinapp.listing",
     "pk": 2,
     "fields": {
       "user": 1,
       "category": 1,
       "heading": "coconut",
       "detail": "Thenga. Coconut for chutney and curry.",
-      "rate": "20$ per piece",
-      "is_active": true,
-      "created_at": "2024-12-23T10:22:23.279Z"
+      "rate": "20$ per piece"
     }
   },
   {
-    "model": "coinapp.offering",
+    "model": "coinapp.listing",
     "pk": 3,
     "fields": {
       "user": 1,
       "category": 1,
       "heading": "egg",
       "detail": "Egg recipies per piece",
-      "rate": "8$ per piece",
-      "is_active": true,
-      "created_at": "2024-12-23T10:22:23.285Z"
+      "rate": "8$ per piece"
     }
   },
   {
-    "model": "coinapp.offering",
+    "model": "coinapp.listing",
     "pk": 4,
     "fields": {
       "user": 1,
       "category": 1,
       "heading": "brinjal",
       "detail": "Vazhuthanangal, per kg",
-      "rate": "20$ per kg",
-      "is_active": true,
-      "created_at": "2024-12-23T10:22:23.291Z"
+      "rate": "20$ per kg"
     }
   },
   {
-    "model": "coinapp.offering",
+    "model": "coinapp.listing",
     "pk": 5,
     "fields": {
       "user": 1,
       "category": 1,
       "heading": "mulak_podi",
       "detail": "Mulaku podi per 100gram",
-      "rate": "40$ per 100grams",
-      "is_active": true,
-      "created_at": "2024-12-23T10:22:23.296Z"
+      "rate": "40$ per 100grams"
     }
   },
   {
-    "model": "coinapp.offering",
+    "model": "coinapp.listing",
     "pk": 6,
     "fields": {
       "user": 1,
       "category": 1,
       "heading": "salt",
       "detail": "uppu per kg",
-      "rate": "20$ per kg",
-      "is_active": true,
-      "created_at": "2024-12-23T10:22:23.302Z"
+      "rate": "20$ per kg"
     }
   },
   {
-    "model": "coinapp.offering",
+    "model": "coinapp.listing",
     "pk": 7,
     "fields": {
       "user": 1,
       "category": 2,
       "heading": "earphone",
       "detail": "Earphone",
-      "rate": "800$ per piece",
-      "is_active": true,
-      "created_at": "2024-12-23T10:22:23.310Z"
+      "rate": "800$ per piece"
     }
   },
   {
-    "model": "coinapp.offering",
+    "model": "coinapp.listing",
     "pk": 8,
     "fields": {
       "user": 1,
       "category": 2,
       "heading": "mp3_player",
       "detail": "MP3 Player for listening songs",
-      "rate": "5000$ per piece",
-      "is_active": true,
-      "created_at": "2024-12-23T10:22:23.321Z"
+      "rate": "5000$ per piece"
     }
   },
   {
-    "model": "coinapp.offering",
+    "model": "coinapp.listing",
     "pk": 9,
     "fields": {
       "user": 1,
       "category": 2,
       "heading": "solarpanel",
       "detail": "Solar panel",
-      "rate": "2000$ per piece",
-      "is_active": true,
-      "created_at": "2024-12-23T10:22:23.333Z"
+      "rate": "2000$ per piece"
     }
   },
   {
-    "model": "coinapp.offering",
+    "model": "coinapp.listing",
     "pk": 10,
     "fields": {
       "user": 1,
       "category": 3,
       "heading": "underwear",
       "detail": "UnderWear",
-      "rate": "200$ per piece",
-      "is_active": true,
-      "created_at": "2024-12-23T10:22:23.349Z"
+      "rate": "200$ per piece"
     }
   },
   {
-    "model": "coinapp.offering",
+    "model": "coinapp.listing",
     "pk": 11,
     "fields": {
       "user": 1,
       "category": 3,
       "heading": "tracksuit",
       "detail": "Track suit pants",
-      "rate": "600$ per piece",
-      "is_active": true,
-      "created_at": "2024-12-23T10:22:23.359Z"
+      "rate": "600$ per piece"
     }
   },
   {
-    "model": "coinapp.offering",
+    "model": "coinapp.listing",
     "pk": 12,
     "fields": {
       "user": 1,
       "category": 3,
       "heading": "tshirt",
       "detail": "Tshirt",
-      "rate": "300$ per piece",
-      "is_active": true,
-      "created_at": "2024-12-23T10:22:23.370Z"
+      "rate": "300$ per piece"
     }
   },
   {
-    "model": "coinapp.offering",
+    "model": "coinapp.listing",
     "pk": 13,
     "fields": {
       "user": 1,
       "category": 4,
       "heading": "land",
       "detail": "25 meter/sq land",
-      "rate": "50000$ per cent",
-      "is_active": true,
-      "created_at": "2024-12-23T10:22:23.388Z"
+      "rate": "50000$ per cent"
     }
   },
   {
-    "model": "coinapp.offering",
+    "model": "coinapp.listing",
     "pk": 14,
     "fields": {
       "user": 1,
       "category": 4,
       "heading": "room_rent",
       "detail": "Room rent/month",
-      "rate": "5000$ per month",
-      "is_active": true,
-      "created_at": "2024-12-23T10:22:23.399Z"
+      "rate": "5000$ per month"
     }
   },
   {
