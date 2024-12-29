@@ -35,7 +35,7 @@ class TransactionTest(TestCase):
 
 
 
-class OfferingPageTest(TestCase):
+class ListingTest(TestCase):
     fixtures = [
        "sample.json",
     ]
@@ -64,9 +64,32 @@ class OfferingPageTest(TestCase):
         self.assertInHTML('Add new offering', response.content.decode())
 
         # create a new offering
-        response = self.client.post(self.url, {'action':'add', 'category':1,'heading':'test heading','detail':'test detail','rate':'test rate'}, follow=True)
-        self.assertIn('Offering activated: test heading', str(list(response.context['messages'])[0]))
-        
+        response = self.client.post(self.url, {'action':'add', 'listing_type':'O','category':1,'heading':'test heading','detail':'test detail','rate':'test rate'}, follow=True)
+        self.assertIn('Listing activated: test heading', str(list(response.context['messages'])[0]))
+        self.assertEqual('O', response.context['userlistings'].filter(heading='test heading').first().listing_type)
         response = self.client.get(self.url) 
         self.assertInHTML('Add new offering', response.content.decode())        
         self.assertIn('test heading', response.content.decode())
+    
+
+    def test_want_create(self):
+        self.client.post(reverse('login'), {'username':'7356775981', 'password':'sumee1910'}, follow=True)
+        response = self.client.get(self.url) 
+        self.assertInHTML('Add new want', response.content.decode())
+
+        # create a new offering
+        response = self.client.post(self.url, {'action':'add', 'listing_type':'W','category':1,'heading':'test heading want','detail':'test detail'}, follow=True)
+        self.assertIn('Listing activated: test heading want', str(list(response.context['messages'])[0]))
+        self.assertEqual('W', response.context['userlistings'].filter(heading='test heading want').first().listing_type)
+        response = self.client.get(self.url)     
+        div_part = '''
+        <p class="lead">Wants</p>
+        <ol class="list-group list-group-numbered">  
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto">
+                    <div class="fw-bold">#16:test heading want</div>
+                    Category: Food<br>
+                    test detail<br>                    
+                    
+        '''
+        self.assertIn('test heading want', response.content.decode())
