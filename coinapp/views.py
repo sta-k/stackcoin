@@ -9,7 +9,7 @@ from django.db.models import Q, F, BooleanField, Case, When, Sum
 from django.db import transaction
 from django.contrib import messages
 from django.urls import reverse_lazy
-from coinapp.models import Transaction, Offering, Category, GeneralSettings
+from coinapp.models import Transaction, Listing, Category, GeneralSettings
 from coinapp.forms import SignUpForm
 
 User = get_user_model()
@@ -95,7 +95,7 @@ class UserDetail(View):
     def get(self, request, **kwargs):
         user = User.objects.get(id=kwargs["user"])
         categories = Category.objects.order_by("name")
-        userofferings = Offering.objects.select_related('category').filter(user=user)
+        userofferings = Listing.objects.select_related('category').filter(user=user)
         return render(
             request,
             "coinapp/user_detail.html",
@@ -105,25 +105,25 @@ class UserDetail(View):
     @method_decorator(login_required)
     def post(self, request, **kwargs):
         if request.user.pk == kwargs["user"]:
-            # offering = Offering.objects.get(id=request.POST["offering"])
+            # offering = Listing.objects.get(id=request.POST["offering"])
             # my_offerings = request.user.offerings
             user_action = request.POST["action"]
             if user_action == "add":
-                offering=Offering.objects.create(
+                offering=Listing.objects.create(
                     user=request.user,
                     category=request.POST['category'],
                     heading=request.POST['heading'],
                     detail=request.POST['detail'],
                     rate=request.POST['rate'],
                 )
-                messages.success(request, f"Offering activated: {offering}.")            
+                messages.success(request, f"Listing activated: {offering}.")            
             elif user_action == "remove":
                 print('Need to remove offering')
                 # if my_offerings.count() < 2:
                 #     messages.warning(request, "Error: 1 offering is required..")
                 # else:
                 #     my_offerings.remove(offering)
-                #     messages.info(request, f"Offering deactivated: {offering}.")
+                #     messages.info(request, f"Listing deactivated: {offering}.")
             else:
                 messages.warning(request, "Error: Invalid Action..")
         else:
