@@ -24,7 +24,7 @@
             <div class="text-end">
               {% if user.is_authenticated %}
                 <div style="float: right;">
-                  <a href="{% url 'coinapp:user_detail' user=user.id %}">               
+                  <a href="{% url 'coinapp:user_detail' exchange=user.exchange.code user=user.id %}">               
                     <strong>{{ user.username }}</strong>    
                   </a>  | <form method="post" style="display:inline!important;" action="{% url 'logout' %}">
                       {% csrf_token %}

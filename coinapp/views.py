@@ -9,7 +9,7 @@ from django.db.models import Q, F, BooleanField, Case, When, Sum
 from django.db import transaction
 from django.contrib import messages
 from django.urls import reverse_lazy
-from coinapp.models import Transaction, Listing, Category, GeneralSettings
+from coinapp.models import Transaction, Listing, Category, GeneralSettings, Exchange
 from coinapp.forms import SignUpForm
 
 User = get_user_model()
@@ -75,7 +75,14 @@ class HomeView(View):
             messages.warning(request, "Error! Amount must be a number.")
         return redirect("coinapp:home")
 
+class ExchangeList(ListView):
+    paginate_by = 20
+    template_name = "coinapp/exchange_list.html"
+    context_object_name = "exchanges"
 
+    def get_queryset(self):
+        return Exchange.objects.all()
+    
 class UserList(ListView):
     paginate_by = 20
     template_name = "coinapp/user_list.html"
@@ -83,7 +90,7 @@ class UserList(ListView):
 
     def get_queryset(self):
         query = self.request.GET.get("q", "")
-        queryset = User.objects.order_by("first_name")
+        queryset = User.objects.filter(exchange__code=self.kwargs['exchange']).order_by("first_name")
         if query:
             queryset = queryset.filter(
                 Q(username__icontains=query) | Q(first_name__icontains=query)
@@ -99,7 +106,7 @@ class UserDetail(View):
         return render(
             request,
             "coinapp/user_detail.html",
-            {"current_user": user, "categories": categories,"transactions": get_transactions(user), "userlistings": userlistings},
+            {"current_user": user, "categories": categories,"transactions": get_transactions(user),"userlistings": userlistings},
         )
 
     @method_decorator(login_required)

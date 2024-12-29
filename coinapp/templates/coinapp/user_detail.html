@@ -11,7 +11,8 @@
 {% block content %} 
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{% url 'coinapp:user_list' %}">Users</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'coinapp:exchange_list' %}">Exchanges</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'coinapp:user_list' exchange=view.kwargs.exchange %}">{{ view.kwargs.exchange }}</a></li>
     <li class="breadcrumb-item active" aria-current="page">{{current_user.username}}</li>
   </ol>
 </nav>
