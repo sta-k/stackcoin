@@ -9,9 +9,12 @@ class GeneralSettings(models.Model):
         return f'{self.key}:{self.value}'
 
 class Exchange(models.Model):
-    code  = models.CharField(max_length=5)
+    code  = models.CharField(max_length=5, unique=True)
     title = models.CharField(max_length=255)
     address  = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f'{self.code}({self.title})'
 
 
 class User(AbstractUser):
@@ -19,13 +22,6 @@ class User(AbstractUser):
     amount = models.IntegerField(default=0)
 
 class Category(models.Model):
-    """
-        Food
-        Shelter
-        Clothing
-        Electronics
-        Water
-    """
     name = models.CharField(max_length=100)
     detail = models.CharField(max_length=255)
 
