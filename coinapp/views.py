@@ -95,28 +95,27 @@ class UserDetail(View):
     def get(self, request, **kwargs):
         user = User.objects.get(id=kwargs["user"])
         categories = Category.objects.order_by("name")
-        userofferings = Listing.objects.select_related('category').filter(user=user)
+        userlistings = Listing.objects.select_related('category').filter(user=user)
         return render(
             request,
             "coinapp/user_detail.html",
-            {"current_user": user, "categories": categories,"transactions": get_transactions(user), "userofferings": userofferings},
+            {"current_user": user, "categories": categories,"transactions": get_transactions(user), "userlistings": userlistings},
         )
 
     @method_decorator(login_required)
     def post(self, request, **kwargs):
         if request.user.pk == kwargs["user"]:
-            # offering = Listing.objects.get(id=request.POST["offering"])
-            # my_offerings = request.user.offerings
             user_action = request.POST["action"]
             if user_action == "add":
-                offering=Listing.objects.create(
+                listing=Listing.objects.create(
                     user=request.user,
                     category_id=request.POST['category'],
                     heading=request.POST['heading'],
                     detail=request.POST['detail'],
-                    rate=request.POST['rate'],
+                    rate=request.POST['rate'] if request.POST['listing_type']=='O' else '',
+                    listing_type= request.POST['listing_type'],
                 )
-                messages.success(request, f"Listing activated: {offering}.")            
+                messages.success(request, f"Listing activated: {listing}.")            
             elif user_action == "remove":
                 print('Need to remove offering')
                 # if my_offerings.count() < 2:
@@ -127,7 +126,7 @@ class UserDetail(View):
             else:
                 messages.warning(request, "Error: Invalid Action..")
         else:
-            messages.warning(request, "Error: You can only create your offerings..")
+            messages.warning(request, "Error: You can only create your listing..")
         return redirect("coinapp:user_detail", user=kwargs["user"])
 
 

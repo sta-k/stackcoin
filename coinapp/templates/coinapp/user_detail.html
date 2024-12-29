@@ -25,6 +25,9 @@
     <button class="nav-link" id="offerings-tab" data-bs-toggle="tab" data-bs-target="#offerings-tab-pane" type="button" role="tab" aria-controls="offerings-tab-pane" aria-selected="false">Offerings</button>
   </li>
   <li class="nav-item" role="presentation">
+    <button class="nav-link" id="wants-tab" data-bs-toggle="tab" data-bs-target="#wants-tab-pane" type="button" role="tab" aria-controls="wants-tab-pane" aria-selected="false">Wants</button>
+  </li>
+  <li class="nav-item" role="presentation">
     <button class="nav-link" id="transactions-tab" data-bs-toggle="tab" data-bs-target="#transactions-tab-pane" type="button" role="tab" aria-controls="transactions-tab-pane" aria-selected="false">Transactions</button>
   </li>
 </ul>
@@ -49,7 +52,10 @@
     </div>
   </div>
   <div class="tab-pane fade" id="offerings-tab-pane" role="tabpanel" aria-labelledby="offerings-tab" tabindex="0">
-    {% include 'coinapp/user_detail/_offerings.html' %}
+    {% include 'coinapp/user_detail/_listings.html' with listing_type='O' %}
+  </div>
+  <div class="tab-pane fade" id="wants-tab-pane" role="tabpanel" aria-labelledby="wants-tab" tabindex="0">
+    {% include 'coinapp/user_detail/_listings.html' with listing_type='W' %}
   </div>
   <div class="tab-pane fade" id="transactions-tab-pane" role="tabpanel" aria-labelledby="transactions-tab" tabindex="0">
     <p class="lead">Transactions</p>
