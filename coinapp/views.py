@@ -111,7 +111,7 @@ class UserDetail(View):
             if user_action == "add":
                 offering=Listing.objects.create(
                     user=request.user,
-                    category=request.POST['category'],
+                    category_id=request.POST['category'],
                     heading=request.POST['heading'],
                     detail=request.POST['detail'],
                     rate=request.POST['rate'],
