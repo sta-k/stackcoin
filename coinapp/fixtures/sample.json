@@ -11,14 +11,26 @@
     "model": "coinapp.exchange",
     "pk": 1,
     "fields": {
-        "code": "KKDE",
-        "title": "Kolakkode exchange",
-        "address": "",
-        "country": "IN",
-        "admin":1,
-        "pending_users": []
+      "code": "KKDE",
+      "title": "Kolakkode exchange",
+      "address": "Kolakkode, Palakkad, Kerala. PIN-678686",
+      "country": "IN",
+      "admin": 1,
+      "pending_users": []
     }
-},
+  },
+  {
+    "model": "coinapp.exchange",
+    "pk": 2,
+    "fields": {
+      "code": "PIXL",
+      "title": "Pixdynamics exchange",
+      "address": "Carnival Infopark, Kakkanad, Kochi",
+      "country": "IN",
+      "admin": 4,
+      "pending_users": []
+    }
+  },
   {
     "model": "coinapp.user",
     "pk": 1,
@@ -33,7 +45,7 @@
       "is_staff": false,
       "is_active": true,
       "date_joined": "2024-10-30T04:31:50.285Z",
-      "amount": -170,
+      "amount": -30,
       "groups": [],
       "user_permissions": [],
       "exchange": 1
@@ -63,7 +75,6 @@
     "model": "coinapp.user",
     "pk": 3,
     "fields": {
-      
       "password": "pbkdf2_sha256$870000$IxqwLJE4C5uhlLF9LBpiOj$jS5VbK7A61RD9t7SpPo2ucLwNLVR03iIATavqJ/l/Sc=",
       "last_login": "2024-10-26T14:39:23.475Z",
       "is_superuser": false,
@@ -94,32 +105,73 @@
       "is_staff": false,
       "is_active": true,
       "date_joined": "2024-10-30T04:36:30.239Z",
-      "amount": 170,
+      "amount": 70,
       "groups": [],
       "user_permissions": [],
-      "exchange": 1
+      "exchange": 2
     }
   },
   {
     "model": "coinapp.user",
     "pk": 5,
     "fields": {
-      "password": "pbkdf2_sha256$870000$HjGLW83SX3cIs92GX2WY4T$QbSW0VOVvtTpjWEC/11waCFmRHUhH1GHI+1Vn97bAto=",
-      "last_login": "2024-10-30T16:52:10.062Z",
-      "is_superuser": true,
-      "username": "admin",
-      "first_name": "",
+      "password": "pbkdf2_sha256$870000$lFrr7P5JxRPUYn2px95ZvL$upvo/5+5+T90AJofgnLtlqwXOOOUUSFwp3oZTNPv69Q=",
+      "last_login": "2024-11-01T07:12:04.780Z",
+      "is_superuser": false,
+      "username": "9495924658",
+      "first_name": "anshad",
       "last_name": "",
       "email": "",
-      "is_staff": true,
+      "is_staff": false,
       "is_active": true,
-      "date_joined": "2024-10-30T16:51:31.762Z",
+      "date_joined": "2024-11-01T07:11:54.389Z",
+      "amount": -40,
+      "groups": [],
+      "user_permissions": [],
+      "exchange": 2
+    }
+  },
+  {
+    "model": "coinapp.user",
+    "pk": 6,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$bKPhFbp3qOQ7ONZq1NPs3J$i8AXf91E5BRrZZ844aMszS34JjZf/YWx0USI8oi+Tn8=",
+      "last_login": "2024-11-01T08:47:22.925Z",
+      "is_superuser": false,
+      "username": "8281752374",
+      "first_name": "Vishnu",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-11-01T08:46:57.959Z",
+      "amount": 0,
+      "groups": [],
+      "user_permissions": [],
+      "exchange": 2
+    }
+  },
+  {
+    "model": "coinapp.user",
+    "pk": 7,
+    "fields": {
+      "password": "pbkdf2_sha256$870000$0QpdqRh8EBda6a3Xdts7Aw$f0xhl+KJs91HTcDSxR5bvhryWCUu/7cqado+YjVZNEE=",
+      "last_login": "2024-11-02T08:17:12.626Z",
+      "is_superuser": false,
+      "username": "9495890370",
+      "first_name": "Shakeer",
+      "last_name": "",
+      "email": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-11-02T08:16:59.131Z",
       "amount": 0,
       "groups": [],
       "user_permissions": [],
       "exchange": 1
     }
   },
+
   {
     "model": "coinapp.listing",
     "pk": 1,
@@ -129,7 +181,7 @@
       "heading": "rice",
       "detail": "Matta rice",
       "rate": "50$ per kg",
-      "listing_type":"O"
+      "listing_type": "O"
     }
   },
   {
@@ -137,7 +189,7 @@
     "pk": 1,
     "fields": {
       "seller": 4,
-      "buyer": 3,
+      "buyer": 1,
       "description": "Badminton Court - Amigos Oct 29",
       "amount": 70,
       "created_at": "2024-10-30T04:38:30.192Z"
@@ -148,10 +200,32 @@
     "pk": 2,
     "fields": {
       "seller": 4,
-      "buyer": 3,
+      "buyer": 1,
       "description": "Chumma tha",
       "amount": 100,
       "created_at": "2024-10-30T10:48:05.234Z"
+    }
+  },
+  {
+    "model": "coinapp.transaction",
+    "pk": 3,
+    "fields": {
+      "seller": 1,
+      "buyer": 4,
+      "description": "Return 100rs due to dummy previous payment ",
+      "amount": 100,
+      "created_at": "2024-10-31T14:54:43.195Z"
+    }
+  },
+  {
+    "model": "coinapp.transaction",
+    "pk": 4,
+    "fields": {
+      "seller": 1,
+      "buyer": 5,
+      "description": "Sandwich ",
+      "amount": 40,
+      "created_at": "2024-11-01T07:12:50.355Z"
     }
   }
 ]
