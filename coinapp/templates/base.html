@@ -3,8 +3,8 @@
 {% url 'coinapp:home' as url_home %}
 {% url 'coinapp:exchange_list' as url_users %}
 {% url 'login' as url_login %}
-{% url 'signup' as url_signup %}
-{% url 'about' as url_about %}
+{% url 'signup_join' as url_signup_join %}
+{% url 'signup_new' as url_signup_new %}
 <!doctype html>
 <html lang="en">
   <head>
@@ -47,10 +47,10 @@
                     <a class="nav-link{% if request.path == url_login %} active{% endif %}" href="{{url_login}}">Log in</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link{% if request.path == url_signup %} active{% endif %}" href="{{url_signup}}">Sign up</a>
+                    <a class="nav-link{% if request.path == url_signup_join %} active{% endif %}" href="{{url_signup_join}}">Join Exchange</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link{% if request.path == url_about %} active{% endif %}" href="{{url_about}}">About</a>
+                    <a class="nav-link{% if request.path == url_signup_new %} active{% endif %}" href="{{url_signup_new}}">New Exchange</a>
                   </li>
                 {% endif %}
                   <li class="nav-item">

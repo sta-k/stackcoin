@@ -33,6 +33,7 @@ CATEGORIES = [
 
 # http://xml.coverpages.org/country3166.html
 COUNTRIES = [
+    ("IN", "India"),
     ("AD", "Andorra"),
     ("AE", "United Arab Emirates"),
     ("AF", "Afghanistan"),
@@ -132,7 +133,6 @@ COUNTRIES = [
     ("ID", "Indonesia"),
     ("IE", "Ireland"),
     ("IL", "Israel"),
-    ("IN", "India"),
     ("IO", "British Indian Ocean Territory"),
     ("IQ", "Iraq"),
     ("IR", "Islamic Republic of Iran"),

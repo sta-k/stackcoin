@@ -15,6 +15,7 @@
         "title": "Kolakkode exchange",
         "address": "",
         "country": "IN",
+        "admin":1,
         "pending_users": []
     }
 },

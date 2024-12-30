@@ -20,14 +20,18 @@ class SignUpForm(UserCreationForm):
     tandc = forms.BooleanField(label="Terms and Conditions.")
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ("username", "first_name","password1", "password2","exchange","tandc")
+        fields = ("exchange","username", "email","first_name","password1", "password2","tandc")
 
+class SignUpFormWithoutExchange(SignUpForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields.pop('exchange')
 
 class ExchangeForm(forms.ModelForm):
     def clean_code(self):
         if len(self.cleaned_data['code']) != 4:
             raise ValidationError('Exchange Code must be 4 charactors long', code='invalid_code')
-        return self.cleaned_data['code'].capitalize()
+        return self.cleaned_data['code'].upper()
     class Meta:
         model = Exchange
         fields = ("code","title","address", "country")

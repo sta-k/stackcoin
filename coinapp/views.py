@@ -3,6 +3,7 @@ from django.views.generic import CreateView, ListView
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.db.models import Q, F, BooleanField, Case, When, Sum
@@ -10,7 +11,7 @@ from django.db import transaction
 from django.contrib import messages
 from django.urls import reverse_lazy
 from coinapp.models import Transaction, Listing, GeneralSettings, Exchange
-from coinapp.forms import SignUpForm, ExchangeForm
+from coinapp.forms import SignUpForm,SignUpFormWithoutExchange, ExchangeForm
 
 User = get_user_model()
 
@@ -22,10 +23,39 @@ def about_view(request):
     return render(request, "about.html")
 
 
-class SignUpView(CreateView):
+class SignUpJoinView(CreateView):
     form_class = SignUpForm
     success_url = reverse_lazy("coinapp:home")
-    template_name = "registration/signup.html"
+    template_name = "registration/signup_join.html"
+
+
+class SignUpNewView(CreateView):
+    form_class = SignUpFormWithoutExchange
+    # success_url = reverse_lazy("coinapp:home")
+    template_name = "registration/signup_new.html"
+
+    def form_valid(self, form):
+        ctx = self.get_context_data()
+        exchange_form = ctx['exchange_form']
+        if exchange_form.is_valid() and form.is_valid():
+            with transaction.atomic():
+                user_obj = form.save()
+                exchange_obj = exchange_form.save(commit=False)
+                exchange_obj.admin = user_obj
+                exchange_obj.save()
+                login(self.request, user_obj)
+                return redirect(reverse_lazy("coinapp:home"))
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+        
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        if self.request.POST:
+            ctx['exchange_form'] = ExchangeForm(self.request.POST)
+        else:
+            ctx['exchange_form'] = ExchangeForm()
+        return ctx
+    
 
 def get_transactions(user):
     return (
@@ -75,16 +105,15 @@ class HomeView(View):
             messages.warning(request, "Error! Amount must be a number.")
         return redirect("coinapp:home")
 
-class ExchangeView(CreateView):
-    paginate_by = 20
-    form_class = ExchangeForm
-    success_url = reverse_lazy("coinapp:home")
-    template_name = "coinapp/exchanges.html"
 
-    def get_context_data(self, **kwargs):
-        kwargs['exchanges'] = Exchange.objects.all()
-        return super().get_context_data(**kwargs)
-    
+class ExchangeView(ListView):
+    paginate_by = 20
+    template_name = "coinapp/exchanges.html"
+    context_object_name = "exchanges"
+ 
+    def get_queryset(self):
+        return Exchange.objects.all()
+
     
 class UserList(ListView):
     paginate_by = 20
