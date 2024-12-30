@@ -134,7 +134,7 @@ class UserDetail(View):
                 messages.warning(request, "Error: Invalid Action..")
         else:
             messages.warning(request, "Error: You can only create your listing..")
-        return redirect("coinapp:user_detail", user=kwargs["user"])
+        return redirect("coinapp:user_detail", exchange=kwargs["exchange"],user=kwargs["user"])
 
 
 @login_required

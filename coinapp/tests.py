@@ -41,7 +41,7 @@ class ListingTest(TestCase):
     ]
     def setUp(self):
         self.client = Client()
-        self.url = reverse("coinapp:user_detail",kwargs={'user':1})
+        self.url = reverse("coinapp:user_detail",kwargs={'exchange':'KKDE','user':1})
     
     def test_offerings_list(self):
         response = self.client.get(self.url) 

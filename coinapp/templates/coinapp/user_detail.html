@@ -12,7 +12,7 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{% url 'coinapp:exchange_list' %}">Exchanges</a></li>
-    <li class="breadcrumb-item"><a href="{% url 'coinapp:user_list' exchange=view.kwargs.exchange %}">{{ view.kwargs.exchange }}</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'coinapp:user_list' exchange=request.resolver_match.kwargs.exchange %}">{{ request.resolver_match.kwargs.exchange }}</a></li>
     <li class="breadcrumb-item active" aria-current="page">{{current_user.username}}</li>
   </ol>
 </nav>
@@ -53,14 +53,14 @@
     </div>
   </div>
   <div class="tab-pane fade" id="offerings-tab-pane" role="tabpanel" aria-labelledby="offerings-tab" tabindex="0">
-    {% include 'coinapp/user_detail/_listings.html' with listing_type='O' %}
+    {% include 'coinapp/parts/_listings.html' with listing_type='O' %}
   </div>
   <div class="tab-pane fade" id="wants-tab-pane" role="tabpanel" aria-labelledby="wants-tab" tabindex="0">
-    {% include 'coinapp/user_detail/_listings.html' with listing_type='W' %}
+    {% include 'coinapp/parts/_listings.html' with listing_type='W' %}
   </div>
   <div class="tab-pane fade" id="transactions-tab-pane" role="tabpanel" aria-labelledby="transactions-tab" tabindex="0">
     <p class="lead">Transactions</p>
-    {% include 'coinapp/user_detail/_transactions.html' %}
+    {% include 'coinapp/parts/_transactions.html' %}
   </div>
 </div>
 
