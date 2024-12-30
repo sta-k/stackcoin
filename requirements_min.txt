@@ -1,5 +1,0 @@
-django-crispy-forms
-Django
-crispy-bootstrap5
-python-decouple
-whitenoise
