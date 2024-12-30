@@ -1,41 +1,5 @@
 from coinapp.models import Offering, Category,User, Exchange
 
-def load_categories():
-    CATEGORIES = [
-        "Accommodation_Space",
-        "Advice_Tuition",
-        "Animals_Pets",
-        "Appliances_Furniture",
-        "Artisans_Specialists",
-        "Arts_Crafts",
-        "Body_Mind",
-        "Books_Publications",
-        "BusinessServices",
-        "Care_Assistance",
-        "CESServices",
-        "Clothing_Apparel",
-        "Community",
-        "Companionship",
-        "Computer_IT",
-        "Electronics",
-        "Entertainment_Recreation",
-        "Food_Drink",
-        "Gardening_Agriculture",
-        "Goods",
-        "Hiring_Borrowing",
-        "HomeServices",
-        "Labour_Assistance",
-        "Media_Advertising",
-        "Miscellaneous",
-        "MotorVehicle",
-        "OfficeEquipment",
-        "PersonalServices",
-        "Toys",
-        "Transport",
-    ]
-    for c in CATEGORIES:
-        Category.objects.get_or_create(name=c)
-
 def load_offerings():
     exch,_ =Exchange.objects.get_or_create(
         code='KKDE',

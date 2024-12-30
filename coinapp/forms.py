@@ -3,7 +3,8 @@ from django.contrib.auth import get_user_model
 from django.core.validators import RegexValidator
 # from django.core.validators import MaxValueValidator, MinValueValidator
 from django import forms
-
+from django.forms.utils import ValidationError
+from .models import Exchange
 User = get_user_model()
 
 class SignUpForm(UserCreationForm):
@@ -20,4 +21,13 @@ class SignUpForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = User
         fields = ("username", "first_name","password1", "password2","exchange","tandc")
-        
+
+
+class ExchangeForm(forms.ModelForm):
+    def clean_code(self):
+        if len(self.cleaned_data['code']) != 4:
+            raise ValidationError('Exchange Code must be 4 charactors long', code='invalid_code')
+        return self.cleaned_data['code'].capitalize()
+    class Meta:
+        model = Exchange
+        fields = ("code","title","address", "country")

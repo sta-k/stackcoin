@@ -9,8 +9,8 @@ from django.db.models import Q, F, BooleanField, Case, When, Sum
 from django.db import transaction
 from django.contrib import messages
 from django.urls import reverse_lazy
-from coinapp.models import Transaction, Listing, Category, GeneralSettings, Exchange
-from coinapp.forms import SignUpForm
+from coinapp.models import Transaction, Listing, GeneralSettings, Exchange
+from coinapp.forms import SignUpForm, ExchangeForm
 
 User = get_user_model()
 
@@ -40,6 +40,7 @@ def get_transactions(user):
         )
         .order_by("-created_at")
     )
+
 @method_decorator(login_required, name="dispatch")
 class HomeView(View):
     def get(self, request):
@@ -58,7 +59,6 @@ class HomeView(View):
         if buyer == seller:
             messages.warning(request, "Error! Seller and buyer are same.")
         elif amt.isnumeric():
-
             description = request.POST["description"]
             with transaction.atomic():
                 seller.amount = F("amount") + amt
@@ -75,13 +75,16 @@ class HomeView(View):
             messages.warning(request, "Error! Amount must be a number.")
         return redirect("coinapp:home")
 
-class ExchangeList(ListView):
+class ExchangeView(CreateView):
     paginate_by = 20
-    template_name = "coinapp/exchange_list.html"
-    context_object_name = "exchanges"
+    form_class = ExchangeForm
+    success_url = reverse_lazy("coinapp:home")
+    template_name = "coinapp/exchanges.html"
 
-    def get_queryset(self):
-        return Exchange.objects.all()
+    def get_context_data(self, **kwargs):
+        kwargs['exchanges'] = Exchange.objects.all()
+        return super().get_context_data(**kwargs)
+    
     
 class UserList(ListView):
     paginate_by = 20
@@ -101,12 +104,11 @@ class UserList(ListView):
 class UserDetail(View):
     def get(self, request, **kwargs):
         user = User.objects.get(id=kwargs["user"])
-        categories = Category.objects.order_by("name")
-        userlistings = Listing.objects.select_related('category').filter(user=user)
+        userlistings = Listing.objects.filter(user=user)
         return render(
             request,
             "coinapp/user_detail.html",
-            {"current_user": user, "categories": categories,"transactions": get_transactions(user),"userlistings": userlistings},
+            {"current_user": user,"transactions": get_transactions(user),"userlistings": userlistings},
         )
 
     @method_decorator(login_required)
@@ -116,7 +118,7 @@ class UserDetail(View):
             if user_action == "add":
                 listing=Listing.objects.create(
                     user=request.user,
-                    category_id=request.POST['category'],
+                    category=request.POST['category'],
                     heading=request.POST['heading'],
                     detail=request.POST['detail'],
                     rate=request.POST['rate'] if request.POST['listing_type']=='O' else '',

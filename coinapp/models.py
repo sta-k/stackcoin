@@ -1,23 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-
-
-class GeneralSettings(models.Model):
-    key = models.CharField(max_length=50)
-    value = models.CharField(max_length=250)
-
-    def __str__(self) -> str:
-        return f"{self.key}:{self.value}"
-
-
-class Exchange(models.Model):
-    code = models.CharField(max_length=5, unique=True)
-    title = models.CharField(max_length=255)
-    address = models.CharField(max_length=255)
-    pending_users = models.ManyToManyField('User', related_name='pending_exchange')
-
-    def __str__(self):
-        return f"{self.code}({self.title})"
+from . import misc
 
 
 class User(AbstractUser):
@@ -25,21 +8,26 @@ class User(AbstractUser):
     amount = models.IntegerField(default=0)
 
 
-class Category(models.Model):
-    name = models.CharField(max_length=100)
-    detail = models.CharField(max_length=255)
+class Exchange(models.Model):
+    COUNTRY_CHOICES = misc.COUNTRIES
+    code = models.CharField(max_length=5, unique=True)
+    title = models.CharField(max_length=255)
+    address = models.CharField(max_length=255)
+    pending_users = models.ManyToManyField("User", related_name="pending_exchange")
+    country = models.CharField(max_length=2, choices=COUNTRY_CHOICES)
 
     def __str__(self):
-        return self.name
+        return f"{self.code}({self.title})"
 
 
 class Listing(models.Model):
+    CATEGORY_CHOICES = misc.CATEGORIES
     LISTING_CHOICES = [
         ("O", "Offering"),
         ("W", "Wants"),
     ]
     user = models.ForeignKey("User", on_delete=models.CASCADE)
-    category = models.ForeignKey("Category", on_delete=models.CASCADE)
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
     heading = models.CharField(max_length=255)
     detail = models.TextField()
     rate = models.CharField(max_length=100, blank=True)
@@ -60,3 +48,12 @@ class Transaction(models.Model):
 
     def __str__(self):
         return f"{self.buyer} -> {self.seller}: {self.amount}"
+
+
+# site specific
+class GeneralSettings(models.Model):
+    key = models.CharField(max_length=50)
+    value = models.CharField(max_length=250)
+
+    def __str__(self) -> str:
+        return f"{self.key}:{self.value}"

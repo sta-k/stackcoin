@@ -11,11 +11,13 @@
     "model": "coinapp.exchange",
     "pk": 1,
     "fields": {
-      "code": "KKDE",
-      "title": "Kolakkode Exchange",
-      "address": ""
+        "code": "KKDE",
+        "title": "Kolakkode exchange",
+        "address": "",
+        "country": "IN",
+        "pending_users": []
     }
-  },
+},
   {
     "model": "coinapp.user",
     "pk": 1,
@@ -118,43 +120,11 @@
     }
   },
   {
-    "model": "coinapp.category",
-    "pk": 1,
-    "fields": {
-      "name": "Food",
-      "detail": ""
-    }
-  },
-  {
-    "model": "coinapp.category",
-    "pk": 2,
-    "fields": {
-      "name": "Electronics",
-      "detail": ""
-    }
-  },
-  {
-    "model": "coinapp.category",
-    "pk": 3,
-    "fields": {
-      "name": "Clothing",
-      "detail": ""
-    }
-  },
-  {
-    "model": "coinapp.category",
-    "pk": 4,
-    "fields": {
-      "name": "Shelter",
-      "detail": ""
-    }
-  },
-  {
     "model": "coinapp.listing",
     "pk": 1,
     "fields": {
       "user": 1,
-      "category": 1,
+      "category": "Food_Drink",
       "heading": "rice",
       "detail": "Matta rice",
       "rate": "50$ per kg",

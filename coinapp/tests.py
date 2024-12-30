@@ -49,7 +49,7 @@ class ListingTest(TestCase):
         <li class="list-group-item d-flex justify-content-between align-items-start">
             <div class="ms-2 me-auto">
                 <div class="fw-bold">#1:rice</div>
-                Category: Food<br>
+                Category: Food_Drink<br>
                 Matta rice<br>                
             </div>
             <h5><span class="badge text-bg-secondary">50$ per kg</span></h5>
