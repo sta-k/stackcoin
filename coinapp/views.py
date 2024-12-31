@@ -11,14 +11,15 @@ from django.db import transaction
 from django.contrib import messages
 from django.urls import reverse_lazy
 from coinapp.models import Transaction, Listing, GeneralSettings, Exchange
-from coinapp.forms import SignUpForm,SignUpFormWithoutExchange, ExchangeForm
+from coinapp.forms import SignUpForm, SignUpFormWithoutExchange, ExchangeForm
+from . import misc
 
 User = get_user_model()
 
 
 def about_view(request):
     about_count = GeneralSettings.objects.get(key="about")
-    about_count.value= int(about_count.value) + 1
+    about_count.value = int(about_count.value) + 1
     about_count.save()
     return render(request, "about.html")
 
@@ -36,7 +37,7 @@ class SignUpNewView(CreateView):
 
     def form_valid(self, form):
         ctx = self.get_context_data()
-        exchange_form = ctx['exchange_form']
+        exchange_form = ctx["exchange_form"]
         if exchange_form.is_valid() and form.is_valid():
             with transaction.atomic():
                 user_obj = form.save()
@@ -47,15 +48,15 @@ class SignUpNewView(CreateView):
                 return redirect(reverse_lazy("coinapp:home"))
         else:
             return self.render_to_response(self.get_context_data(form=form))
-        
+
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         if self.request.POST:
-            ctx['exchange_form'] = ExchangeForm(self.request.POST)
+            ctx["exchange_form"] = ExchangeForm(self.request.POST)
         else:
-            ctx['exchange_form'] = ExchangeForm()
+            ctx["exchange_form"] = ExchangeForm()
         return ctx
-    
+
 
 def get_transactions(user):
     return (
@@ -71,6 +72,7 @@ def get_transactions(user):
         .order_by("-created_at")
     )
 
+
 @method_decorator(login_required, name="dispatch")
 class HomeView(View):
     def get(self, request):
@@ -79,7 +81,11 @@ class HomeView(View):
         return render(
             request,
             "home.html",
-            {"transactions": get_transactions(request.user)[:5], "users": users, "total": total},
+            {
+                "transactions": get_transactions(request.user)[:5],
+                "users": users,
+                "total": total,
+            },
         )
 
     def post(self, request):
@@ -110,11 +116,11 @@ class ExchangeView(ListView):
     paginate_by = 20
     template_name = "coinapp/exchanges.html"
     context_object_name = "exchanges"
- 
+
     def get_queryset(self):
         return Exchange.objects.all()
 
-    
+
 class UserList(ListView):
     paginate_by = 20
     template_name = "coinapp/user_list.html"
@@ -122,7 +128,9 @@ class UserList(ListView):
 
     def get_queryset(self):
         query = self.request.GET.get("q", "")
-        queryset = User.objects.filter(exchange__code=self.kwargs['exchange']).order_by("first_name")
+        queryset = User.objects.filter(exchange__code=self.kwargs["exchange"]).order_by(
+            "first_name"
+        )
         if query:
             queryset = queryset.filter(
                 Q(username__icontains=query) | Q(first_name__icontains=query)
@@ -137,7 +145,12 @@ class UserDetail(View):
         return render(
             request,
             "coinapp/user_detail.html",
-            {"current_user": user,"transactions": get_transactions(user),"userlistings": userlistings},
+            {
+                "current_user": user,
+                "categories": misc.CATEGORIES,
+                "transactions": get_transactions(user),
+                "userlistings": userlistings,
+            },
         )
 
     @method_decorator(login_required)
@@ -145,17 +158,21 @@ class UserDetail(View):
         if request.user.pk == kwargs["user"]:
             user_action = request.POST["action"]
             if user_action == "add":
-                listing=Listing.objects.create(
+                listing = Listing.objects.create(
                     user=request.user,
-                    category=request.POST['category'],
-                    heading=request.POST['heading'],
-                    detail=request.POST['detail'],
-                    rate=request.POST['rate'] if request.POST['listing_type']=='O' else '',
-                    listing_type= request.POST['listing_type'],
+                    category=request.POST["category"],
+                    heading=request.POST["heading"],
+                    detail=request.POST["detail"],
+                    rate=(
+                        request.POST["rate"]
+                        if request.POST["listing_type"] == "O"
+                        else ""
+                    ),
+                    listing_type=request.POST["listing_type"],
                 )
-                messages.success(request, f"Listing activated: {listing}.")            
+                messages.success(request, f"Listing activated: {listing}.")
             elif user_action == "remove":
-                print('Need to remove offering')
+                print("Need to remove offering")
                 # if my_offerings.count() < 2:
                 #     messages.warning(request, "Error: 1 offering is required..")
                 # else:
@@ -165,7 +182,9 @@ class UserDetail(View):
                 messages.warning(request, "Error: Invalid Action..")
         else:
             messages.warning(request, "Error: You can only create your listing..")
-        return redirect("coinapp:user_detail", exchange=kwargs["exchange"],user=kwargs["user"])
+        return redirect(
+            "coinapp:user_detail", exchange=kwargs["exchange"], user=kwargs["user"]
+        )
 
 
 @login_required
