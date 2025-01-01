@@ -1,8 +1,5 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
-from django.core.validators import RegexValidator
-
-# from django.core.validators import MaxValueValidator, MinValueValidator
 from django import forms
 from django.forms.utils import ValidationError
 from .models import Exchange
@@ -11,15 +8,7 @@ User = get_user_model()
 
 
 class SignUpForm(UserCreationForm):
-    # username = forms.CharField(
-    #     validators=[RegexValidator(r'^\d{10}$',message="Please enter a valid 10 digit mobile number.")],
-    #     help_text="Enter your 10 digit mobile number.",
-    #     # error_messages={
-    #     #     # 'required': 'Please enter your 10 digit mobile number.',
-    #     #     # 'max_length': 'Mobile number must be .',
-    #     #     # 'invalid': 'Please enter a valid mobile number.',
-    #     # }
-    # )
+    email = forms.EmailField(required=True)
     tandc = forms.BooleanField(label="Terms and Conditions.")
 
     class Meta(UserCreationForm.Meta):
@@ -27,8 +16,9 @@ class SignUpForm(UserCreationForm):
         fields = (
             "exchange",
             "username",
-            "email",
             "first_name",
+            "email",
+            "phone",
             "password1",
             "password2",
             "tandc",
@@ -45,10 +35,31 @@ class ExchangeForm(forms.ModelForm):
     def clean_code(self):
         if len(self.cleaned_data["code"]) != 4:
             raise ValidationError(
-                "Exchange Code must be 4 charactors long", code="invalid_code"
+                "Exchange Code must be 4 characters long", code="invalid_code"
             )
         return self.cleaned_data["code"].upper()
 
     class Meta:
         model = Exchange
         fields = ("code", "title", "address", "country")
+
+
+class TransactionForm(forms.Form):
+    CHOICES = [
+        ("seller", "Enter as seller(Receive money)"),
+        ("buyer", "Enter as buyer(Send money)"),
+    ]
+    transaction_type = forms.ChoiceField(
+        initial='seller',
+        widget=forms.RadioSelect,
+        choices=CHOICES,
+    )
+    to_user = forms.ModelChoiceField(queryset=User.objects.all())
+    description = forms.CharField()
+    amount = forms.IntegerField()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["to_user"].label_from_instance = (
+            lambda u: f"{u.username}({u.first_name})"
+        )
