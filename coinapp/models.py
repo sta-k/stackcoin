@@ -15,7 +15,10 @@ class Exchange(models.Model):
     address = models.CharField(max_length=255)
     pending_users = models.ManyToManyField("User", related_name="pending_exchange")
     country = models.CharField(max_length=2, choices=COUNTRY_CHOICES)
-    admin = models.ForeignKey("User", on_delete=models.CASCADE, related_name="exchange_admin")
+    admin = models.ForeignKey(
+        "User", on_delete=models.CASCADE, related_name="exchange_admin"
+    )
+
     def __str__(self):
         return f"{self.code}({self.title})"
 
