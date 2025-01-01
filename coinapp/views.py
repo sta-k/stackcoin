@@ -11,7 +11,12 @@ from django.db import transaction
 from django.contrib import messages
 from django.urls import reverse_lazy
 from coinapp.models import Transaction, Listing, GeneralSettings, Exchange
-from coinapp.forms import SignUpForm, SignUpFormWithoutExchange, ExchangeForm
+from coinapp.forms import (
+    SignUpForm,
+    SignUpFormWithoutExchange,
+    TransactionForm,
+    ExchangeForm,
+)
 from . import misc
 
 User = get_user_model()
@@ -73,23 +78,60 @@ def get_transactions(user):
     )
 
 
+@login_required
+def transaction_view(request):
+    if request.method == "POST":
+        form = TransactionForm(request.POST)
+        if form.is_valid():
+            amt = form.cleaned_data["amount"]
+            desc = form.cleaned_data["description"]
+            # default is seller transaction(receive money)
+            seller = request.user
+            buyer = form.cleaned_data['to_user']
+            if request.POST["transaction_type"] == "buyer":
+                # send money
+                seller, buyer = buyer, seller
+            with transaction.atomic():
+                seller.amount = F("amount") + amt
+                buyer.amount = F("amount") - amt
+                seller.save(update_fields=['amount'])
+                buyer.save(update_fields=['amount'])
+                txn = Transaction.objects.create(
+                    seller=seller,
+                    buyer=buyer,
+                    description=desc,
+                    amount=amt,
+                )
+                messages.success(request, f"Success! Payment success. txnId:{txn.id}")
+            return redirect("coinapp:home")
+        
+    else:
+        form = TransactionForm()
+    latest_trans = get_transactions(request.user)[:5]
+    return render(
+        request, "home.html", {"transaction_form": form, "transactions": latest_trans}
+    )
+
+
 @method_decorator(login_required, name="dispatch")
 class HomeView(View):
     def get(self, request):
-        users = User.objects.exclude(username=request.user.username)
-        total = User.objects.aggregate(total=Sum("amount"))
         return render(
             request,
             "home.html",
             {
+                "transaction_form": TransactionForm(),
                 "transactions": get_transactions(request.user)[:5],
-                "users": users,
-                "total": total,
+                "users": User.objects.exclude(username=request.user.username),
+                "total": User.objects.aggregate(total=Sum("amount")),
             },
         )
 
     def post(self, request):
-        buyer = User.objects.get(username=request.POST["buyer"])
+        form = TransactionForm(request.POST)
+
+        
+        buyer = User.objects.get(username=request.POST["to_user"])
         seller = request.user
         amt = request.POST["amount"]
         if buyer == seller:
@@ -101,7 +143,6 @@ class HomeView(View):
                 buyer.amount = F("amount") - amt
                 seller.save()
                 buyer.save()
-
                 txn = Transaction.objects.create(
                     seller=seller, buyer=buyer, description=description, amount=amt
                 )
@@ -141,7 +182,6 @@ class UserList(ListView):
 class UserDetail(View):
     def get(self, request, **kwargs):
         user = User.objects.get(id=kwargs["user"])
-        userlistings = Listing.objects.filter(user=user)
         return render(
             request,
             "coinapp/user_detail.html",
@@ -149,7 +189,7 @@ class UserDetail(View):
                 "current_user": user,
                 "categories": misc.CATEGORIES,
                 "transactions": get_transactions(user),
-                "userlistings": userlistings,
+                "userlistings": Listing.objects.filter(user=user),
             },
         )
 

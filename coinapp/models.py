@@ -5,6 +5,7 @@ from . import misc
 
 class User(AbstractUser):
     exchange = models.ForeignKey("Exchange", on_delete=models.CASCADE, null=True)
+    phone = models.CharField(max_length=50, blank=False)
     amount = models.IntegerField(default=0)
 
 
@@ -35,6 +36,7 @@ class Listing(models.Model):
     detail = models.TextField()
     rate = models.CharField(max_length=100, blank=True)
     listing_type = models.CharField(max_length=1, choices=LISTING_CHOICES)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.heading}({self.detail[:30]}...)"
@@ -44,7 +46,9 @@ class Transaction(models.Model):
     seller = models.ForeignKey(
         "User", on_delete=models.CASCADE, related_name="txn_seller"
     )
-    buyer = models.ForeignKey("User", on_delete=models.CASCADE, related_name="txn_buer")
+    buyer = models.ForeignKey(
+        "User", on_delete=models.CASCADE, related_name="txn_buyer"
+    )
     description = models.CharField(max_length=255)
     amount = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
