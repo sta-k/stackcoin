@@ -11,5 +11,6 @@ urlpatterns = [
         views.UserDetail.as_view(),
         name="user_detail",
     ),
-    path("ajax/<str:purpose>/", views.ajax_get_view, name="ajax_get"),
+    path('listing/<int:pk>/delete/', views.ListingDeleteView.as_view(), name='listing_delete'),
+    # path("ajax/<str:purpose>/", views.ajax_views, name="ajax_views"),
 ]

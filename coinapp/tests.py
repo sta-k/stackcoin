@@ -1,7 +1,9 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+
 User = get_user_model()
+
 
 class TransactionTest(TestCase):
     fixtures = [
@@ -13,7 +15,7 @@ class TransactionTest(TestCase):
         self.url = reverse("coinapp:home")
         self.nusra = User.objects.get(username="8921513696")
         self.sulaiman = User.objects.get(username="8547622462")
-    
+
     def test_login_and_make_seller_transaction(self):
         response = self.client.get(self.url, follow=True)
         self.assertInHTML("<h2>Log in</h2>", response.content.decode())
@@ -123,14 +125,14 @@ class ListingTest(TestCase):
             {
                 "action": "add",
                 "listing_type": "O",
-                "category": 'Food_Drink',
+                "category": "Food_Drink",
                 "heading": "test heading",
                 "detail": "test detail",
                 "rate": "test rate",
             },
             follow=True,
-        )        
-        
+        )
+
         self.assertIn(
             "Listing activated: test heading",
             str(list(response.context["messages"])[0]),
@@ -161,7 +163,7 @@ class ListingTest(TestCase):
             {
                 "action": "add",
                 "listing_type": "W",
-                "category":'Food_Drink',
+                "category": "Food_Drink",
                 "heading": "test heading want",
                 "detail": "test detail",
             },
@@ -180,3 +182,30 @@ class ListingTest(TestCase):
         )
         response = self.client.get(self.url)
         self.assertIn("test heading want", response.content.decode())
+
+    def test_listing_delete(self):
+        # nusra must not able to delete rice listing
+        self.client.post(
+            reverse("login"),
+            {"username": "8921513696", "password": "sumee1910"},
+            follow=True,
+        )
+        response = self.client.post(
+            reverse("coinapp:listing_delete", kwargs={"pk": 1}), follow=True
+        )
+
+        response = self.client.get(self.url)
+        self.assertIn('rice', [l.heading for l in response.context['userlistings']])
+
+        # suhail can delete rice listing
+        self.client.post(
+            reverse("login"),
+            {"username": "7356775981", "password": "sumee1910"},
+            follow=True,
+        )        
+        response = self.client.post(
+            reverse("coinapp:listing_delete", kwargs={"pk": 1}), follow=True
+        )
+
+        response = self.client.get(self.url)
+        self.assertNotIn('rice', [l.heading for l in response.context['userlistings']])

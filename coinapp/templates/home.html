@@ -61,14 +61,14 @@
 {% endblock %}
 
 {% block js %}
-<script src="{% static 'select2/select2.min.js' %}"></script>
+{% comment %} <script src="{% static 'select2/select2.min.js' %}"></script>
 <script>
     $(function () {
         $('#id_buyer').select2();
         $('#id_buyer').val('').trigger('change');
         $('#id_buyer').on('select2:select', function (e) {
             $.ajax({ 
-                url: "{% url 'coinapp:ajax_get' 'get_balance' %}", 
+                url: "{% url 'coinapp:ajax_views' 'get_balance' %}", 
                 data: {'username': e.params.data.id},
                 success: function (data) {
                     $("#user_balance").html(data);
@@ -77,5 +77,5 @@
         });
 
     });
-</script>
+</script> {% endcomment %}
 {% endblock %}

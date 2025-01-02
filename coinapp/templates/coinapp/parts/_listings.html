@@ -50,11 +50,7 @@
         Category: {{listing.category}}<br>
         {{listing.detail}}<br>
         {% if request.user == current_user %}
-        <form method="post" action=".">{% csrf_token %}
-          <input type="hidden" name="action" value="remove">
-          <input type="hidden" name="offering" value="{{listing.id}}">
-          <button type="submit" class="btn btn-link">remove</button>
-        </form>
+        <a href="{% url 'coinapp:listing_delete' listing.id %}" class="btn btn-link">remove</a>
         {% endif %}
       </div>
       <h5><span class="badge text-bg-secondary">{{listing.rate}}</span></h5>

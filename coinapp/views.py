@@ -1,14 +1,13 @@
 from django.contrib.auth import get_user_model
 from django.views.generic import CreateView, ListView, DeleteView
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from django.utils.decorators import method_decorator
 from django.db.models import Q, F, BooleanField, Case, When
 from django.db import transaction
 from django.contrib import messages
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic.edit import FormView
 
 from coinapp.models import Transaction, Listing, GeneralSettings, Exchange
@@ -173,15 +172,33 @@ class UserDetail(FormView):
         )
 
 
-@login_required
-def ajax_get_view(request,purpose):
-    if purpose=='get_balance':
-        # i think it is not used
-        user = User.objects.get(username=request.GET.get("username"))
-        return HttpResponse(user.amount)
+@method_decorator([login_required], name="dispatch")
+class ListingDeleteView(DeleteView):
+    model = Listing
+    def get_queryset(self):
+        return Listing.objects.filter(user=self.request.user)
 
+    def get_success_url(self):
+        u = self.request.user
+        return reverse(
+            "coinapp:user_detail", kwargs={"exchange": u.exchange.code, "user": u.id}
+        )
 
 """
+@login_required
+def ajax_views(request, purpose):
+    resp = ''
+    if purpose == "get_balance":
+        # i think it is not used
+        resp = User.objects.get(username=request.GET.get("username")).amount
+    elif purpose == "delete_listing":
+        obj = Listing.objects.get(id=request.GET.get("listing"))
+        if obj.user == request.user:
+            obj.delete()
+            resp = 'listing_deleted'
+    return HttpResponse(resp)
+
+
 class UserDetail(View):
     def get(self, request, **kwargs):
         user = User.objects.get(id=kwargs["user"])

@@ -69,11 +69,19 @@
 
 
 {% block js %}
-<script src="{% static 'select2/select2.min.js' %}"></script>
+{% comment %} <script src="{% static 'select2/select2.min.js' %}"></script>
 <script>
     $(function () {
         $('#id_offering').select2();
+        $(".delete_listing").click(function(){
+          let listing = $(this).data('listing');
+          let url = "{% url 'coinapp:ajax_views' 'delete_listing' %}";
+          $.get(`${url}?listing=${listing}`, function(data, status){
+            if(data=='listing_deleted'){
 
+            }
+          });
+        }); 
     });
-</script>
+</script> {% endcomment %}
 {% endblock %}
