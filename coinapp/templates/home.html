@@ -68,7 +68,7 @@
         $('#id_buyer').val('').trigger('change');
         $('#id_buyer').on('select2:select', function (e) {
             $.ajax({ 
-                url: "{% url 'coinapp:ajax_get_balance' %}", 
+                url: "{% url 'coinapp:ajax_get' 'get_balance' %}", 
                 data: {'username': e.params.data.id},
                 success: function (data) {
                     $("#user_balance").html(data);

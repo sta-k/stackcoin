@@ -1,13 +1,15 @@
 {% load quiz_extras %}
-
+{% load crispy_forms_tags %} 
 {% if request.user == current_user %}
 <div class="card mb-3">
   <div class="card-header">Add new {% if listing_type == 'O' %}offering{%else%}want{%endif%}</div>
   <div class="card-body">
     <form method="post" action=".">{% csrf_token %}
-      <input type="hidden" name="action" value="add">
-      <input type="hidden" name="listing_type" value="{{listing_type}}">
       
+      <input type="hidden" name="listing_type" value="{{listing_type}}">
+      {{ form|crispy }}
+      {% comment %} 
+      <input type="hidden" name="action" value="add">
       <div class="mb-3">
         <label for="id_category" class="form-label">Category:</label>
         <select class="form-control" id="id_category" name="category">
@@ -30,7 +32,8 @@
         <label class="form-label">Rate:</label>
         <input type="text" placeholder="100$ per hour" class="form-control" id="id_rate" name="rate">
       </div>
-      {% endif %}
+      {% endif %} 
+      {% endcomment %}
       <button type="submit" class="btn btn-success">Save</button>
     </form>
   </div>

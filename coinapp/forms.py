@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
 from django import forms
 from django.forms.utils import ValidationError
-from .models import Exchange
+from .models import Exchange, Listing
 
 User = get_user_model()
 
@@ -61,5 +61,11 @@ class TransactionForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["to_user"].label_from_instance = (
-            lambda u: f"{u.username}({u.first_name})"
+            lambda u: f"{u.username}|{u.first_name}|amt:{u.amount}rs"
         )
+
+
+class ListingForm(forms.ModelForm):
+    class Meta:
+        model = Listing
+        fields = ("category","heading","detail","rate")
