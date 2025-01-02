@@ -1,23 +1,24 @@
 from django.contrib.auth import get_user_model
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, DeleteView
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from django.utils.decorators import method_decorator
-from django.views import View
-from django.db.models import Q, F, BooleanField, Case, When, Sum
+from django.db.models import Q, F, BooleanField, Case, When
 from django.db import transaction
 from django.contrib import messages
 from django.urls import reverse_lazy
+from django.views.generic.edit import FormView
+
 from coinapp.models import Transaction, Listing, GeneralSettings, Exchange
 from coinapp.forms import (
     SignUpForm,
     SignUpFormWithoutExchange,
     TransactionForm,
     ExchangeForm,
+    ListingForm,
 )
-from . import misc
 
 User = get_user_model()
 
@@ -87,15 +88,15 @@ def transaction_view(request):
             desc = form.cleaned_data["description"]
             # default is seller transaction(receive money)
             seller = request.user
-            buyer = form.cleaned_data['to_user']
+            buyer = form.cleaned_data["to_user"]
             if request.POST["transaction_type"] == "buyer":
                 # send money
                 seller, buyer = buyer, seller
             with transaction.atomic():
                 seller.amount = F("amount") + amt
                 buyer.amount = F("amount") - amt
-                seller.save(update_fields=['amount'])
-                buyer.save(update_fields=['amount'])
+                seller.save(update_fields=["amount"])
+                buyer.save(update_fields=["amount"])
                 txn = Transaction.objects.create(
                     seller=seller,
                     buyer=buyer,
@@ -104,53 +105,13 @@ def transaction_view(request):
                 )
                 messages.success(request, f"Success! Payment success. txnId:{txn.id}")
             return redirect("coinapp:home")
-        
+
     else:
         form = TransactionForm()
     latest_trans = get_transactions(request.user)[:5]
     return render(
         request, "home.html", {"transaction_form": form, "transactions": latest_trans}
     )
-
-
-@method_decorator(login_required, name="dispatch")
-class HomeView(View):
-    def get(self, request):
-        return render(
-            request,
-            "home.html",
-            {
-                "transaction_form": TransactionForm(),
-                "transactions": get_transactions(request.user)[:5],
-                "users": User.objects.exclude(username=request.user.username),
-                "total": User.objects.aggregate(total=Sum("amount")),
-            },
-        )
-
-    def post(self, request):
-        form = TransactionForm(request.POST)
-
-        
-        buyer = User.objects.get(username=request.POST["to_user"])
-        seller = request.user
-        amt = request.POST["amount"]
-        if buyer == seller:
-            messages.warning(request, "Error! Seller and buyer are same.")
-        elif amt.isnumeric():
-            description = request.POST["description"]
-            with transaction.atomic():
-                seller.amount = F("amount") + amt
-                buyer.amount = F("amount") - amt
-                seller.save()
-                buyer.save()
-                txn = Transaction.objects.create(
-                    seller=seller, buyer=buyer, description=description, amount=amt
-                )
-                messages.success(request, f"Success! Payment success. txnId:{txn.id}")
-
-        else:
-            messages.warning(request, "Error! Amount must be a number.")
-        return redirect("coinapp:home")
 
 
 class ExchangeView(ListView):
@@ -179,6 +140,48 @@ class UserList(ListView):
         return queryset
 
 
+class UserDetail(FormView):
+    template_name = "coinapp/user_detail.html"
+    form_class = ListingForm
+
+    def get_context_data(self, **kwargs):
+        user = User.objects.get(id=self.kwargs["user"])
+        ctx = super().get_context_data(**kwargs)
+        extra = {
+            "current_user": user,
+            "transactions": get_transactions(user),
+            "userlistings": Listing.objects.filter(user=user),
+        }
+        return ctx | extra
+
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        # This method is called when valid form data has been POSTed.
+        # It should return an HttpResponse.
+        obj = form.save(commit=False)
+        obj.listing_type = self.request.POST["listing_type"]
+        obj.user = self.request.user
+        obj.save()
+        messages.success(self.request, f"Listing activated: {obj}.")
+        return redirect(
+            "coinapp:user_detail",
+            exchange=self.kwargs["exchange"],
+            user=self.kwargs["user"],
+        )
+
+
+@login_required
+def ajax_get_view(request,purpose):
+    if purpose=='get_balance':
+        # i think it is not used
+        user = User.objects.get(username=request.GET.get("username"))
+        return HttpResponse(user.amount)
+
+
+"""
 class UserDetail(View):
     def get(self, request, **kwargs):
         user = User.objects.get(id=kwargs["user"])
@@ -226,8 +229,42 @@ class UserDetail(View):
             "coinapp:user_detail", exchange=kwargs["exchange"], user=kwargs["user"]
         )
 
+        @method_decorator(login_required, name="dispatch")
+class HomeView(View):
+    def get(self, request):
+        return render(
+            request,
+            "home.html",
+            {
+                "transaction_form": TransactionForm(),
+                "transactions": get_transactions(request.user)[:5],
+                "users": User.objects.exclude(username=request.user.username),
+                "total": User.objects.aggregate(total=Sum("amount")),
+            },
+        )
 
-@login_required
-def get_balance(request):
-    user = User.objects.get(username=request.GET.get("username"))
-    return HttpResponse(user.amount)
+    def post(self, request):
+        form = TransactionForm(request.POST)
+
+        
+        buyer = User.objects.get(username=request.POST["to_user"])
+        seller = request.user
+        amt = request.POST["amount"]
+        if buyer == seller:
+            messages.warning(request, "Error! Seller and buyer are same.")
+        elif amt.isnumeric():
+            description = request.POST["description"]
+            with transaction.atomic():
+                seller.amount = F("amount") + amt
+                buyer.amount = F("amount") - amt
+                seller.save()
+                buyer.save()
+                txn = Transaction.objects.create(
+                    seller=seller, buyer=buyer, description=description, amount=amt
+                )
+                messages.success(request, f"Success! Payment success. txnId:{txn.id}")
+
+        else:
+            messages.warning(request, "Error! Amount must be a number.")
+        return redirect("coinapp:home")
+"""

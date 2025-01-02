@@ -123,13 +123,14 @@ class ListingTest(TestCase):
             {
                 "action": "add",
                 "listing_type": "O",
-                "category": 1,
+                "category": 'Food_Drink',
                 "heading": "test heading",
                 "detail": "test detail",
                 "rate": "test rate",
             },
             follow=True,
-        )
+        )        
+        
         self.assertIn(
             "Listing activated: test heading",
             str(list(response.context["messages"])[0]),
@@ -160,7 +161,7 @@ class ListingTest(TestCase):
             {
                 "action": "add",
                 "listing_type": "W",
-                "category": 1,
+                "category":'Food_Drink',
                 "heading": "test heading want",
                 "detail": "test detail",
             },

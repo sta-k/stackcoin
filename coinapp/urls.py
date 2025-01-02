@@ -11,5 +11,5 @@ urlpatterns = [
         views.UserDetail.as_view(),
         name="user_detail",
     ),
-    path("ajax/get_balance/", views.get_balance, name="ajax_get_balance"),
+    path("ajax/<str:purpose>/", views.ajax_get_view, name="ajax_get"),
 ]
