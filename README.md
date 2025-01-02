@@ -5,9 +5,9 @@
 Clone the repo and create a virtual env, then run:
 ```
 cp .env.example .env
-pip install -r requirements_min.txt
+pip install -r requirements.txt
 python manage.py migrate
-python manage.py shell < coinapp/fixtures/offerings.py
+python manage.py loaddata sample
 python manage.py runserver
 visit <http://localhost:8000/>
 ```

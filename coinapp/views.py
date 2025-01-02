@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.views.generic import CreateView, ListView, DeleteView
+from django.views.generic import CreateView, ListView, DeleteView, DetailView
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
@@ -184,6 +184,20 @@ class ListingDeleteView(DeleteView):
             "coinapp:user_detail", kwargs={"exchange": u.exchange.code, "user": u.id}
         )
 
+
+class ListingPreviewView(DetailView):
+    model = Listing 
+    # template_name = 'classroom/teachers/question_preview.html'
+    # pk_url_kwarg = 'question_pk'
+
+    # def get_context_data(self, **kwargs):
+    #     question = self.get_object()
+    #     kwargs['quiz'] = question.quiz
+    #     return super().get_context_data(**kwargs)
+
+    # def get_queryset(self):
+    #     return Question.objects.filter(quiz__owner=self.request.user)
+  
 """
 @login_required
 def ajax_views(request, purpose):

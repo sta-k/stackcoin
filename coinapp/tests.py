@@ -94,16 +94,17 @@ class ListingTest(TestCase):
     def test_offerings_list(self):
         response = self.client.get(self.url)
         rice_offering = """
-        <li class="list-group-item d-flex justify-content-between align-items-start">
-            <div class="ms-2 me-auto">
-                <div class="fw-bold">#1:rice</div>
-                Category: Food_Drink<br>
-                Matta rice<br>                
-            </div>
-            <h5><span class="badge text-bg-secondary">50$ per kg</span></h5>
-        </li>
+        <div class="list-group">  
+            <a href="/listing/1/preview/" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">Food_Drink</h5>
+                <small class="text-body-secondary">Nov. 1, 2024</small>
+                </div>
+                <p class="mb-1">#1: rice</p>
+                <small class="text-body-secondary">rate: 50$ per kg</small>
+            </a>            
+        </div>
         """
-
         self.assertInHTML(rice_offering, response.content.decode())
 
     def test_offering_create(self):
@@ -195,17 +196,21 @@ class ListingTest(TestCase):
         )
 
         response = self.client.get(self.url)
-        self.assertIn('rice', [l.heading for l in response.context['userlistings']])
+        self.assertIn("rice", [l.heading for l in response.context["userlistings"]])
 
         # suhail can delete rice listing
         self.client.post(
             reverse("login"),
             {"username": "7356775981", "password": "sumee1910"},
             follow=True,
-        )        
+        )
         response = self.client.post(
             reverse("coinapp:listing_delete", kwargs={"pk": 1}), follow=True
         )
 
         response = self.client.get(self.url)
-        self.assertNotIn('rice', [l.heading for l in response.context['userlistings']])
+        self.assertNotIn("rice", [l.heading for l in response.context["userlistings"]])
+
+    def test_listing_preview(self):
+        response = self.client.get(reverse("coinapp:listing_preview", kwargs={"pk": 1}))
+        self.assertIn("Matta rice", response.content.decode())

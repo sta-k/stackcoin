@@ -4,36 +4,9 @@
 <div class="card mb-3">
   <div class="card-header">Add new {% if listing_type == 'O' %}offering{%else%}want{%endif%}</div>
   <div class="card-body">
-    <form method="post" action=".">{% csrf_token %}
-      
+    <form method="post" action=".">{% csrf_token %}      
       <input type="hidden" name="listing_type" value="{{listing_type}}">
       {{ form|crispy }}
-      {% comment %} 
-      <input type="hidden" name="action" value="add">
-      <div class="mb-3">
-        <label for="id_category" class="form-label">Category:</label>
-        <select class="form-control" id="id_category" name="category">
-            <option value="">---------</option> 
-            {% for category in categories %}
-            <option value="{{category.0}}">{{category.1}}</option>
-            {% endfor %}
-        </select>
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Heading:</label>
-        <input type="text" placeholder="Driving" class="form-control" id="id_heading" name="heading">
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Detail:</label>
-        <input type="text" placeholder="Driving to airport" class="form-control" id="id_detail" name="detail">
-      </div>
-      {% if listing_type == 'O' %}
-      <div class="mb-3">
-        <label class="form-label">Rate:</label>
-        <input type="text" placeholder="100$ per hour" class="form-control" id="id_rate" name="rate">
-      </div>
-      {% endif %} 
-      {% endcomment %}
       <button type="submit" class="btn btn-success">Save</button>
     </form>
   </div>
@@ -42,18 +15,15 @@
 {% endif %}
 
 <p class="lead">{% if listing_type == 'O' %}Offerings{% else %}Wants{% endif %}</p>
-<ol class="list-group list-group-numbered">
+<div class="list-group">
   {% for listing in userlistings|in_category:listing_type %}
-  <li class="list-group-item d-flex justify-content-between align-items-start">
-      <div class="ms-2 me-auto">
-        <div class="fw-bold">#{{listing.pk}}:{{listing.heading}}</div>
-        Category: {{listing.category}}<br>
-        {{listing.detail}}<br>
-        {% if request.user == current_user %}
-        <a href="{% url 'coinapp:listing_delete' listing.id %}" class="btn btn-link">remove</a>
-        {% endif %}
-      </div>
-      <h5><span class="badge text-bg-secondary">{{listing.rate}}</span></h5>
-  </li>
+  <a href="{% url 'coinapp:listing_preview' listing.id %}" class="list-group-item list-group-item-action">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">{{listing.category}}</h5>
+      <small class="text-body-secondary">{{ listing.created_at|date }}</small>
+    </div>
+    <p class="mb-1">#{{listing.id}}: {{listing.heading}}</p>
+    <small class="text-body-secondary">rate: {{listing.rate}}</small>
+  </a>
   {% endfor %}
-</ol>
+</div>
