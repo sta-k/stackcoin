@@ -50,7 +50,7 @@ class TransactionForm(forms.Form):
         ("buyer", "Enter as buyer(Send money)"),
     ]
     transaction_type = forms.ChoiceField(
-        initial='seller',
+        initial="seller",
         widget=forms.RadioSelect,
         choices=CHOICES,
     )
@@ -65,7 +65,19 @@ class TransactionForm(forms.Form):
         )
 
 
+class DetailWidget(forms.Textarea):
+    template_name = "coinapp/parts/_detail_widget.html"
+
+
 class ListingForm(forms.ModelForm):
     class Meta:
         model = Listing
-        fields = ("category","heading","detail","rate")
+        fields = ("category", "heading", "detail", "rate")
+        widgets = {
+            "detail": DetailWidget(), # attrs={'rows': 40}),
+        }
+        error_messages = {
+            'detail': {
+                'required': "Please click the above button(Generate Detail from Heading) to fill the Detail using AI.",
+            },
+        }
