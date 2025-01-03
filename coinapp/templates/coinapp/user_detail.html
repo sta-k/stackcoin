@@ -69,6 +69,43 @@
 
 
 {% block js %}
+<!--
+<script src="https://unpkg.com/showdown/dist/showdown.min.js"></script>
+var converter = new showdown.Converter();
+converter.makeHtml(data)
+-->
+<script src="{% static 'js/typed.umd.js' %}"></script>
+<script lang="text/javascript">  
+  $("#btn_generate_ai").click(function(){
+    let heading = $("#id_heading").val();
+    if (heading.length < 20) {
+      alert('The Heading must contain at least 20 characters.')
+      return
+    }
+    $(this).prop("disabled", true);
+    $(this).html(`<span class="spinner-border spinner-border-sm" aria-hidden="true"></span> Loading...`);
+
+    let url = "{% url 'coinapp:ajax_views' 'ai' %}";
+  
+    
+    $("#id_detail").show();
+    $.get(`${url}?details=${heading}`, function(data, status){
+      
+      let options = {
+        strings: [data],
+        typeSpeed: 40,
+        backSpeed: 0, // Set backSpeed to 0 to disable erasing
+        showCursor: false,
+        loop: false,
+        onComplete: function () {          
+          $("#btn_generate_ai").hide();
+        }
+      };
+      let typed = new Typed('#id_detail', options);
+    });
+  });
+</script>
+
 {% comment %} <script src="{% static 'select2/select2.min.js' %}"></script>
 <script>
     $(function () {

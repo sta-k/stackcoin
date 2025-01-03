@@ -1,3 +1,4 @@
+from openai import OpenAI
 from django.contrib.auth import get_user_model
 from django.views.generic import CreateView, ListView, DeleteView, DetailView
 from django.shortcuts import render, redirect
@@ -9,6 +10,8 @@ from django.db import transaction
 from django.contrib import messages
 from django.urls import reverse_lazy, reverse
 from django.views.generic.edit import FormView
+from django.http import HttpResponse
+from django.conf import settings
 
 from coinapp.models import Transaction, Listing, GeneralSettings, Exchange
 from coinapp.forms import (
@@ -175,6 +178,7 @@ class UserDetail(FormView):
 @method_decorator([login_required], name="dispatch")
 class ListingDeleteView(DeleteView):
     model = Listing
+
     def get_queryset(self):
         return Listing.objects.filter(user=self.request.user)
 
@@ -186,7 +190,7 @@ class ListingDeleteView(DeleteView):
 
 
 class ListingPreviewView(DetailView):
-    model = Listing 
+    model = Listing
     # template_name = 'classroom/teachers/question_preview.html'
     # pk_url_kwarg = 'question_pk'
 
@@ -197,7 +201,40 @@ class ListingPreviewView(DetailView):
 
     # def get_queryset(self):
     #     return Question.objects.filter(quiz__owner=self.request.user)
-  
+
+
+def github_models_api(heading):
+    text = f"""Create an offering description for local exchange trading system 
+        where I can offer activity or things like {heading}"""
+    client = OpenAI(
+        base_url="https://models.inference.ai.azure.com",
+        api_key=settings.GITHUB_TOKEN,
+    )
+    system_msg = "You are a helpful assistant."
+    response = client.chat.completions.create(
+        messages=[
+            {"role": "system", "content": system_msg},
+            {"role": "user", "content": text},
+        ],
+        model="gpt-4o",
+        temperature=1.0,
+        max_tokens=1000,
+        top_p=1.0,
+    )
+    return response.choices[0].message.content
+
+
+def ajax_views(request, purpose):
+    resp = ""
+    if purpose == "get_balance":
+        # i think it is not used
+        resp = User.objects.get(username=request.GET.get("username")).amount
+    elif purpose == "ai":
+        # ajax/ai/?details=
+        resp = github_models_api(request.GET.get("details"))
+    return HttpResponse(resp)
+
+
 """
 @login_required
 def ajax_views(request, purpose):
