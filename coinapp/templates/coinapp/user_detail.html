@@ -89,8 +89,7 @@ converter.makeHtml(data)
   
     
     $("#id_detail").show();
-    $.get(`${url}?details=${heading}`, function(data, status){
-      
+    $.get(`${url}?details=${heading}`, function(data, status){      
       let options = {
         strings: [data],
         typeSpeed: 40,
@@ -102,6 +101,9 @@ converter.makeHtml(data)
         }
       };
       let typed = new Typed('#id_detail', options);
+    }).fail(function() {
+      $("#btn_generate_ai").hide();
+      $("#id_detail").val('api error');
     });
   });
 </script>
