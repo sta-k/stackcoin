@@ -12,6 +12,13 @@ python manage.py runserver
 visit <http://localhost:8000/>
 ```
 
+## Host it on vercel
+
+* https://vercel.com/suhailvs-projects -> Add New... -> Project -> import git repo -> other
+* add environment variables
+* add `app = application` in `mysite/wsgi.py`
+
+
 ## The Problems with Conventional Money
 
 https://www.community-exchange.org/home/qanda/the-problems-with-conventional-money/
