@@ -3,11 +3,14 @@ from django.urls import path, include
 from coinapp.views import SignUpJoinView, SignUpNewView
 
 from django.views.generic import TemplateView
-
-
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+from django.views.decorators.csrf import csrf_exempt
 urlpatterns = [
     path("", include("coinapp.urls")),
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path("admin/", admin.site.urls),
+    path('dj-rest-auth/', include('dj_rest_auth.urls')),
     # path("about/", about_view, name='about'), #TemplateView.as_view(template_name="about.html"), name='about'),
     path("accounts/", include("django.contrib.auth.urls")),
     path("accounts/signup_join/", SignUpJoinView.as_view(), name="signup_join"),

@@ -29,7 +29,7 @@ ALLOWED_HOSTS = config(
     "ALLOWED_HOSTS", cast=lambda v: [s.strip() for s in v.split(",")]
 )
 
-
+ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,13 +39,23 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
+    # apps
+    "corsheaders",
+    'rest_framework',
+    'rest_framework.authtoken',
+    'dj_rest_auth',
     "crispy_forms",
     "crispy_bootstrap5",
+    'drf_spectacular',
+
+    # my apps
     "coinapp",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -149,3 +159,13 @@ LOGOUT_REDIRECT_URL = "coinapp:home"
 MAXIMUM_BALANCE = 10000
 MINIMUM_BALANCE = -10000
 GITHUB_TOKEN = config("GITHUB_TOKEN")
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+SITE_ID = 1 
+CORS_ORIGIN_ALLOW_ALL = True
