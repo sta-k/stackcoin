@@ -7,6 +7,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from django.views.decorators.csrf import csrf_exempt
 urlpatterns = [
     path("", include("coinapp.urls")),
+    path("api/v1/", include("api.urls")),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path("admin/", admin.site.urls),
