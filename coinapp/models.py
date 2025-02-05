@@ -37,7 +37,7 @@ class Listing(models.Model):
     rate = models.CharField(max_length=100, blank=True)
     listing_type = models.CharField(max_length=1, choices=LISTING_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
-
+    img = models.ImageField(upload_to='offering/%Y/%m/%d/', null=True, blank=True) 
     def __str__(self):
         return f"{self.heading}({self.detail[:30]}...)"
 
@@ -49,6 +49,7 @@ class Transaction(models.Model):
     buyer = models.ForeignKey(
         "User", on_delete=models.CASCADE, related_name="txn_buyer"
     )
+    listing = models.ForeignKey("Listing", on_delete=models.SET_NULL, null=True)
     description = models.CharField(max_length=255)
     amount = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)

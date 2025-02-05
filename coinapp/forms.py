@@ -72,7 +72,7 @@ class DetailWidget(forms.Textarea):
 class ListingForm(forms.ModelForm):
     class Meta:
         model = Listing
-        fields = ("category", "heading", "detail", "rate")
+        fields = ("category", "heading", "detail", "rate", "img")
         widgets = {
             "detail": DetailWidget(), # attrs={'rows': 40}),
         }

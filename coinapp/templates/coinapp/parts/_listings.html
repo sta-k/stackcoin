@@ -4,7 +4,7 @@
 <div class="card mb-3">
   <div class="card-header">Add new {% if listing_type == 'O' %}offering{%else%}want{%endif%}</div>
   <div class="card-body">
-    <form method="post" action="." novalidate>{% csrf_token %}      
+    <form method="post" action="." novalidate enctype="multipart/form-data">{% csrf_token %}      
       <input type="hidden" name="listing_type" value="{{listing_type}}">
       {{ form|crispy }}
       <button type="submit" class="btn btn-success">Save</button>

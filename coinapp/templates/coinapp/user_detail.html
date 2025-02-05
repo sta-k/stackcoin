@@ -75,7 +75,16 @@ var converter = new showdown.Converter();
 converter.makeHtml(data)
 -->
 <script src="{% static 'js/typed.umd.js' %}"></script>
-<script lang="text/javascript">  
+<script lang="text/javascript"> 
+  function hidebtns() {
+    $("#btn_generate_ai").hide();
+    $("#btn_show_details").hide();
+  } 
+  
+  $("#btn_show_details").click(function(){
+    $("#id_detail").show();
+    hidebtns();
+  });
   $("#btn_generate_ai").click(function(){
     let heading = $("#id_heading").val();
     if (heading.length < 20) {
@@ -97,12 +106,12 @@ converter.makeHtml(data)
         showCursor: false,
         loop: false,
         onComplete: function () {          
-          $("#btn_generate_ai").hide();
+          hidebtns();
         }
       };
       let typed = new Typed('#id_detail', options);
     }).fail(function() {
-      $("#btn_generate_ai").hide();
+      hidebtns();
       $("#id_detail").val('api error');
     });
   });
