@@ -1,4 +1,5 @@
 {% extends 'base.html' %} 
+{% load static %}
 {% block content %} 
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
@@ -15,7 +16,14 @@
   <tr><td><strong>{% if object.listing_type == 'O' %}Offering{%else%}Want{%endif%} ID:</strong></td><td>#{{object.id}}</td></tr>
   <tr><td><strong>Title:</strong></td><td>{{ object.heading }}</td></tr>
   <tr><td><strong>Category:</strong></td><td>{{object.category}}</td></tr>
-  <tr><td><strong>Description:</strong></td><td>{{ object.detail|linebreaks }}</td></tr>
+  <tr><td colspan="2">
+    <strong>Description:</strong><br>
+    {# object.detail|linebreaks #}
+    <span id="offering_detail">{{ object.detail }}</span>
+  </td></tr>
+  {% if object.img %}
+  <tr><td colspan="2"><strong>Picture:</strong><br><img src="{{ object.img.url }}" class="img-thumbnail" alt=""></td></tr>
+  {% endif %}
   <tr><td><strong>Requesting:</strong></td><td>{{object.rate}}</td></tr>
   <tr><td><strong>Added On:</strong></td><td>{{ object.created_at|date }}</td></tr>
 </table>
@@ -36,4 +44,14 @@
 <a href="{% url 'coinapp:listing_delete' object.id %}">delete</a>
 {% endif %}
 
+{% endblock %}
+
+
+{% block js %}
+<script src="{% static 'js/showdown.min.js' %}"></script>
+<script>
+  let converter = new showdown.Converter();
+  let htmlOutput = converter.makeHtml($("#offering_detail").html());
+  $("#offering_detail").html(htmlOutput);
+</script>
 {% endblock %}
